@@ -745,6 +745,13 @@
 			path = Device;
 			sourceTree = "<group>";
 		};
+		B0566CBF1BC8F7D300424239 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		B0B5E43E1BC7F13000B2F33D = {
 			isa = PBXGroup;
 			children = (
@@ -767,10 +774,10 @@
 		B0B5E4491BC7F13000B2F33D /* Buy */ = {
 			isa = PBXGroup;
 			children = (
+				B0566CBF1BC8F7D300424239 /* Model */,
 				B0B5E47A1BC7F17D00B2F33D /* FrameWork */,
 				B0B5E4701BC7F15B00B2F33D /* Libs */,
 				B0B5E4791BC7F15B00B2F33D /* Utils */,
-				B0B5E4711BC7F15B00B2F33D /* Model */,
 				B0B5E4721BC7F15B00B2F33D /* Source */,
 				B0B5E4731BC7F15B00B2F33D /* UI */,
 				B0B5E44E1BC7F13000B2F33D /* AppDelegate.h */,
@@ -822,13 +829,6 @@
 				B0B5E4E01BC7F21E00B2F33D /* ZJModelTool */,
 			);
 			path = Libs;
-			sourceTree = "<group>";
-		};
-		B0B5E4711BC7F15B00B2F33D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		B0B5E4721BC7F15B00B2F33D /* Source */ = {

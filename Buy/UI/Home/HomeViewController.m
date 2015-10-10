@@ -52,7 +52,7 @@
 //获取数据
 -(void)getData{
     [NetWoking getHomeData:^(NSDictionary *dic) {
-        NSLog(@"%@", dic[@"bannerList"]);
+        NSLog(@"%@", dic[@"bannerList"][0]);
     } err:^{
         
     }];
