@@ -1,0 +1,49 @@
+//
+//  PrefixHeader.pch
+//  Buy
+//
+//  Created by qf on 15/10/9.
+//  Copyright (c) 2015年 Chakery. All rights reserved.
+//
+
+#ifndef Buy_PrefixHeader_pch
+#define Buy_PrefixHeader_pch
+
+#import "AFNetworking.h"
+#import "CGYDB.h"
+#import "JHRefresh.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "CGYScrollView.h"
+#import "DeviceManager.h"
+#import "NetWoking.h"
+#import "ZJModelTool.h"
+
+#define COLOR(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+
+//TabBar
+#define TABBAR_NAME @[@"首页",@"分类",@"发现",@"我的"]
+#define TABBAR_IMAGE @[@"icon_home_tabbar.png",@"icon_sort_tabbar.png",@"icon_find_tabbar.png",@"icon_my_tabbar.png"]
+#define TABBAR_IMAGE2 @[@"icon_home_tabbar_selected.png",@"icon_sort_tabbar_selected.png",@"icon_find_tabbar_selected.png",@"icon_my_tabbar_selected.png"]
+
+
+#define APPINFO @{@"app_name" : @"禾禾小镇",@"mobile_type" : @"ios",@"version_code" : @"1.3.6"}
+
+//API
+#define API_HOME @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
