@@ -8,10 +8,16 @@
 
 #import "HomeViewController.h"
 #import "HeaderCollectionReusableView.h"
+#import "BannerListModel.h"
+#import "CategoryListModel.h"
+#import "ShareListModel.h"
 
 @interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
+@property (nonatomic, strong) NSArray *adArray;//滚动广告图
+@property (nonatomic, strong) NSArray *menuArray;//菜单按钮
+@property (nonatomic, strong) NSMutableArray *dataArray;//列表数据
 
 @end
 
@@ -47,15 +53,21 @@
     [searchButton setImage:image forState:UIControlStateNormal];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
     self.navigationItem.rightBarButtonItem = barButton;
+    //
+    _dataArray = [[NSMutableArray alloc]init];
 }
 
 //获取数据
 -(void)getData{
     [NetWoking getHomeData:^(NSDictionary *dic) {
-        NSLog(@"%@", dic[@"bannerList"][0]);
+        _adArray = [BannerListModel setModelWithArray:dic[@"bannerList"]];
+        _menuArray = [CategoryListModel setModelWithArray:dic[@"categoryList"]];
+        [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
+        [_collectionView reloadData];
     } err:^{
         
     }];
+    
 }
 
 //设置collectionView
@@ -87,7 +99,7 @@
 
 //Collection个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 9;
+    return _dataArray.count;
 }
 
 //Collection点击方法
