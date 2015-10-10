@@ -8,11 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HeaderCollectionReusableView : UICollectionReusableView
+@protocol HeaderCollectionReusableViewDelegate <NSObject>
+//scrollView点击
+-(void)didSelectedScrollView:(NSInteger)index;
+//菜单点击
+-(void)didSelectedMenu:(NSInteger)index;
+@end
 
--(void)setHeaderView;
+
+
+@interface HeaderCollectionReusableView : UICollectionReusableView
+@property (nonatomic, strong) id<HeaderCollectionReusableViewDelegate> delegate;
 
 //设置滚动图片
 -(void)setScrollViewWithArray:(NSArray *)array;
+
+//设置菜单按钮
+-(void)setMenuWithArray:(NSArray *)array;
+
+//设置 Cell Header
+-(void)setCellHeader;
 
 @end

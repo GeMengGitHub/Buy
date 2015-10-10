@@ -47,19 +47,20 @@
     self.navigationItem.titleView = titleLabel;
     //搜索按钮
     UIButton * searchButton = [[UIButton alloc]init];
-    searchButton.frame = CGRectMake(0, 0, 22, 22);
+    searchButton.frame = CGRectMake(0, 0, 24, 24);
     searchButton.tintColor = [UIColor whiteColor];
-    UIImage *image = [[UIImage imageNamed:@"icon_noresult"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *image = [[UIImage imageNamed:@"homeViewSearch_icon.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [searchButton setImage:image forState:UIControlStateNormal];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
     self.navigationItem.rightBarButtonItem = barButton;
-    //
+
     _dataArray = [[NSMutableArray alloc]init];
 }
 
 //获取数据
 -(void)getData{
     [NetWoking getHomeData:^(NSDictionary *dic) {
+        NSLog(@"%@", dic);
         _adArray = [BannerListModel setModelWithArray:dic[@"bannerList"]];
         _menuArray = [CategoryListModel setModelWithArray:dic[@"categoryList"]];
         [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
@@ -67,7 +68,6 @@
     } err:^{
         
     }];
-    
 }
 
 //设置collectionView
@@ -77,8 +77,8 @@
     _flowLayout.itemSize = CGSizeMake((r.size.width-12)/2, 160);
     _flowLayout.minimumLineSpacing = 4;
     _flowLayout.minimumInteritemSpacing = 4;
-    _flowLayout.sectionInset = UIEdgeInsetsMake(0, 4, 0, 4);
-    _flowLayout.headerReferenceSize = CGSizeMake(320, 200);
+    _flowLayout.sectionInset = UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f);
+    _flowLayout.headerReferenceSize = CGSizeMake(r.size.width, 0.0f);
     _flowLayout.scrollDirection = UICollectionViewScrollPositionCenteredVertically;
     
     _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, r.size.width, r.size.height - 64 - 49) collectionViewLayout:_flowLayout];
@@ -102,6 +102,10 @@
     return _dataArray.count;
 }
 
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return 1;
+}
+
 //Collection点击方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -116,9 +120,11 @@
     if (_adArray.count > 0) {
         [reusableView setScrollViewWithArray:_adArray];
     }
-    [reusableView setHeaderView];
+    if (_menuArray.count > 0) {
+        [reusableView setMenuWithArray:_menuArray];
+    }
+    [reusableView setCellHeader];
     return reusableView;
 }
-
 
 @end

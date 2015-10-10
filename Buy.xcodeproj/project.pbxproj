@@ -14,6 +14,7 @@
 		B0566CC21BC8F86100424239 /* BannerListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B0566CC11BC8F86100424239 /* BannerListModel.m */; };
 		B0566CC81BC9131400424239 /* CategoryListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B0566CC71BC9131400424239 /* CategoryListModel.m */; };
 		B0566CCB1BC915AC00424239 /* ShareListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B0566CCA1BC915AC00424239 /* ShareListModel.m */; };
+		B0566CCD1BC93E3100424239 /* homeViewSearch_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B0566CCC1BC93E3100424239 /* homeViewSearch_icon@2x.png */; };
 		B0B5E44D1BC7F13000B2F33D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B5E44C1BC7F13000B2F33D /* main.m */; };
 		B0B5E4501BC7F13000B2F33D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B5E44F1BC7F13000B2F33D /* AppDelegate.m */; };
 		B0B5E4531BC7F13000B2F33D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B5E4521BC7F13000B2F33D /* ViewController.m */; };
@@ -339,6 +340,7 @@
 		B0566CC71BC9131400424239 /* CategoryListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryListModel.m; sourceTree = "<group>"; };
 		B0566CC91BC915AC00424239 /* ShareListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareListModel.h; sourceTree = "<group>"; };
 		B0566CCA1BC915AC00424239 /* ShareListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareListModel.m; sourceTree = "<group>"; };
+		B0566CCC1BC93E3100424239 /* homeViewSearch_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeViewSearch_icon@2x.png"; sourceTree = "<group>"; };
 		B0B5E4471BC7F13000B2F33D /* Buy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Buy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0B5E44B1BC7F13000B2F33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0B5E44C1BC7F13000B2F33D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1095,6 +1097,7 @@
 		B0B5E5221BC7FE5F00B2F33D /* images */ = {
 			isa = PBXGroup;
 			children = (
+				B0566CCC1BC93E3100424239 /* homeViewSearch_icon@2x.png */,
 				B0B5E5231BC7FE5F00B2F33D /* AppIcon29x29.png */,
 				B0B5E5241BC7FE5F00B2F33D /* AppIcon29x29@2x.png */,
 				B0B5E5251BC7FE5F00B2F33D /* AppIcon29x29@2x~ipad.png */,
@@ -1658,6 +1661,7 @@
 				B0B5E6651BC7FE6000B2F33D /* icon_detai_unlike@2x.png in Resources */,
 				B0B5E66F1BC7FE6000B2F33D /* icon_filter@2x.png in Resources */,
 				B0B5E6291BC7FE6000B2F33D /* bg_alsoLike@2x.png in Resources */,
+				B0566CCD1BC93E3100424239 /* homeViewSearch_icon@2x.png in Resources */,
 				B0B5E61B1BC7FE6000B2F33D /* AppIcon40x40@3x.png in Resources */,
 				B0B5E6AB1BC7FE6000B2F33D /* icon_my_tabbar_selected@2x.png in Resources */,
 				B0B5E6D81BC7FE6000B2F33D /* icon_weibo@2x.png in Resources */,
