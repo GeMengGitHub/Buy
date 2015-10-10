@@ -50,6 +50,8 @@
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.bounces = NO;
     _scrollView.pagingEnabled = YES;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
     [_scrollView setContentOffset:CGPointMake(_mainFrame.size.width, 0)];
     _scrollView.frame = CGRectMake(_mainFrame.origin.x, _mainFrame.origin.y, _mainFrame.size.width, _mainFrame.size.height - 20);
     [self.view addSubview:_scrollView];
@@ -76,7 +78,8 @@
     for (int i = 0; i < _processedImageArray.count; i ++) {
         UIImageView *imageView = [[UIImageView alloc]init];
         imageView.frame = CGRectMake(_mainFrame.size.width * i, _mainFrame.origin.y, _mainFrame.size.width, _mainFrame.size.height - 20);
-        imageView.image = [UIImage imageNamed:_processedImageArray[i]];
+        //imageView.image = [UIImage imageNamed:_processedImageArray[i]];
+        [imageView setImageWithURL:[NSURL URLWithString:_processedImageArray[i]]];
         [_scrollView addSubview:imageView];
     }
 }

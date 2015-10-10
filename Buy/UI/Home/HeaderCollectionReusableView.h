@@ -12,4 +12,7 @@
 
 -(void)setHeaderView;
 
+//设置滚动图片
+-(void)setScrollViewWithArray:(NSArray *)array;
+
 @end

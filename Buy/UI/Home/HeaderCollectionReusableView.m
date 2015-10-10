@@ -7,6 +7,7 @@
 //
 
 #import "HeaderCollectionReusableView.h"
+#import "BannerListModel.h"
 
 @interface HeaderCollectionReusableView ()
 @property (nonatomic, strong) CGYScrollView *scrollView;
@@ -17,14 +18,17 @@
 
 -(void)setHeaderView{
     self.backgroundColor = [UIColor whiteColor];
-    [self setScrollViewWithArray:nil];
 }
 
 //设置滚动图片
--(void)setScrollViewWithArray:(NSMutableArray *)array{
+-(void)setScrollViewWithArray:(NSArray *)array{
+    NSMutableArray *imageArray = [[NSMutableArray alloc]init];
+    for (BannerListModel *model in array) {
+        [imageArray addObject:model.logo2];
+    }
     CGRect main = [UIScreen mainScreen].bounds;
-    CGRect r = CGRectMake(0, 0, main.size.width, 100);
-    _scrollView = [[CGYScrollView alloc]initWithImages:array withFrame:r withTime:4];
+    CGRect r = CGRectMake(0, 0, main.size.width, 150);
+    _scrollView = [[CGYScrollView alloc]initWithImages:imageArray withFrame:r withTime:4];
     [self addSubview:_scrollView.view];
 }
 

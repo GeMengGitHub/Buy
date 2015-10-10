@@ -113,6 +113,9 @@
     if (kind == UICollectionElementKindSectionHeader) {
          reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView" forIndexPath:indexPath];
     }
+    if (_adArray.count > 0) {
+        [reusableView setScrollViewWithArray:_adArray];
+    }
     [reusableView setHeaderView];
     return reusableView;
 }
