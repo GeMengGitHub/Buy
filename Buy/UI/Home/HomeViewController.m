@@ -11,13 +11,17 @@
 #import "BannerListModel.h"
 #import "CategoryListModel.h"
 #import "ShareListModel.h"
+#import "HomeCollectionViewCell.h"
+#import "DetailsViewController.h"
 
-@interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,HeaderCollectionReusableViewDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) NSArray *adArray;//滚动广告图
 @property (nonatomic, strong) NSArray *menuArray;//菜单按钮
 @property (nonatomic, strong) NSMutableArray *dataArray;//列表数据
+@property (nonatomic, assign) int page;//第几页
+@property (nonatomic, strong) UIButton *topButton;//返回顶部
 
 @end
 
@@ -28,6 +32,12 @@
     [self setInit];
     [self getData];
     [self setCollectionView];
+    [self setScrollViewTopView];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.tabBarController.tabBar.hidden = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,45 +65,81 @@
     self.navigationItem.rightBarButtonItem = barButton;
 
     _dataArray = [[NSMutableArray alloc]init];
+    _page = 0;
 }
 
 //获取数据
 -(void)getData{
-    [NetWoking getHomeData:^(NSDictionary *dic) {
-        NSLog(@"%@", dic);
+    [NetWoking getHomeDataWithPage:_page data:^(NSDictionary *dic) {
         _adArray = [BannerListModel setModelWithArray:dic[@"bannerList"]];
         _menuArray = [CategoryListModel setModelWithArray:dic[@"categoryList"]];
-        [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
-        [_collectionView reloadData];
-    } err:^{
+        if (_page == 0) {
+            [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
+        } else {
+            NSArray *array = [ShareListModel setModelWithArray:dic[@"shareList"]];
+            for (ShareListModel *model in array) {
+                [_dataArray addObject:model];
+            }
+        }
         
+        //收起下拉刷新
+        [_collectionView headerEndRefreshingWithResult:JHRefreshResultSuccess];
+        //收起上拉加载更多
+        [_collectionView footerEndRefreshing];
+        //刷新页面
+        [_collectionView reloadData];
+        
+    } err:^{
+        //收起下拉刷新
+        [_collectionView headerEndRefreshingWithResult:JHRefreshResultSuccess];
+        //收起上拉加载更多
+        [_collectionView footerEndRefreshing];
     }];
+    
 }
 
 //设置collectionView
 -(void)setCollectionView{
     CGRect r = [UIScreen mainScreen].bounds;
     _flowLayout = [[UICollectionViewFlowLayout alloc]init];
-    _flowLayout.itemSize = CGSizeMake((r.size.width-12)/2, 160);
+    _flowLayout.itemSize = CGSizeMake((r.size.width-12)/2, 200);
     _flowLayout.minimumLineSpacing = 4;
     _flowLayout.minimumInteritemSpacing = 4;
     _flowLayout.sectionInset = UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f);
-    _flowLayout.headerReferenceSize = CGSizeMake(r.size.width, 0.0f);
+    _flowLayout.headerReferenceSize = CGSizeMake(320.0f, 0.0f);
     _flowLayout.scrollDirection = UICollectionViewScrollPositionCenteredVertically;
     
     _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, r.size.width, r.size.height - 64 - 49) collectionViewLayout:_flowLayout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
+    _collectionView.showsHorizontalScrollIndicator = NO;
+    _collectionView.showsVerticalScrollIndicator = NO;
     _collectionView.backgroundColor = COLOR(240, 240, 240, 1);
-    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"homeCell"];
+    [_collectionView registerClass:[HomeCollectionViewCell class] forCellWithReuseIdentifier:@"homeCell"];
     [_collectionView registerClass:[HeaderCollectionReusableView class]forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView"];
     [self.view addSubview:_collectionView];
+    
+    //下拉刷新
+    __block HomeViewController *mySelf = self;
+    [_collectionView addRefreshHeaderViewWithAniViewClass:[JHRefreshCommonAniView class] beginRefresh:^{
+        mySelf.page = 0;
+        [mySelf getData];
+    }];
+    
+    //上拉获取更多
+    [_collectionView addRefreshFooterViewWithAniViewClass:[JHRefreshCommonAniView class] beginRefresh:^{
+        mySelf.page ++;
+        [mySelf getData];
+    }];
+
 }
 
 //Collection协议方法
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"homeCell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor orangeColor];
+    HomeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"homeCell" forIndexPath:indexPath];
+    if (_dataArray.count > 0) {
+        [cell setCellWithModel:_dataArray[indexPath.row]];
+    }
     return cell;
 }
 
@@ -108,7 +154,10 @@
 
 //Collection点击方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
+    DetailsViewController *detailsViewController = [[DetailsViewController alloc]init];
+    ShareListModel *model = _dataArray[indexPath.row];
+    detailsViewController.shareModel = model;
+    [self.navigationController pushViewController:detailsViewController animated:YES];
 }
 
 //Collection HeaderView
@@ -117,6 +166,7 @@
     if (kind == UICollectionElementKindSectionHeader) {
          reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headView" forIndexPath:indexPath];
     }
+    reusableView.delegate = self;
     if (_adArray.count > 0) {
         [reusableView setScrollViewWithArray:_adArray];
     }
@@ -125,6 +175,48 @@
     }
     [reusableView setCellHeader];
     return reusableView;
+}
+
+//设置返回顶部的按钮
+-(void)setScrollViewTopView{
+    _topButton = [[UIButton alloc]init];
+    _topButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_topButton setBackgroundImage:[UIImage imageNamed:@"scroll_top.png"] forState:UIControlStateNormal];
+    _topButton.layer.cornerRadius = 18;
+    _topButton.layer.masksToBounds = YES;
+    _topButton.alpha = 0.9;
+    _topButton.hidden = YES;
+    [_topButton addTarget:self action:@selector(scrollTop) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_topButton];
+    [self.view bringSubviewToFront:_topButton];
+    
+    NSArray *topArray = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[_topButton(36)]-10-|" options:0 metrics:nil views:@{@"_topButton":_topButton}];
+    [self.view addConstraints:topArray];
+    topArray = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_topButton(36)]-10-|" options:0 metrics:nil views:@{@"_topButton":_topButton}];
+    [self.view addConstraints:topArray];
+}
+
+//滚动监听
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (scrollView.contentOffset.y > [UIScreen mainScreen].bounds.size.height) {
+        _topButton.hidden = NO;
+    } else {
+        _topButton.hidden = YES;
+    }
+}
+
+//返回顶部按钮点击事件
+-(void)scrollTop{
+    [_collectionView scrollRectToVisible:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
+}
+
+//HeaderCollectionReusableView协议方法（菜单按钮、滚动图片点击事件）
+-(void)didSelectedMenu:(NSInteger)index{
+    
+}
+
+-(void)didSelectedScrollView:(NSInteger)index{
+    
 }
 
 @end

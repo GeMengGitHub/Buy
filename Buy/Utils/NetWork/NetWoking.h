@@ -13,6 +13,14 @@ typedef void(^dicBlock)(NSDictionary *dic);
 
 @interface NetWoking : NSObject
 
-+(void)getHomeData:(dicBlock)block err:(errBlock)err;
+//获取主页数据
++(void)getHomeDataWithPage:(int)page data:(dicBlock)block err:(errBlock)err;
+
+//猜你喜欢数据
++(void)getPerhapsDataWithShareId:(NSString *)shareId data:(dicBlock)block err:(errBlock)err;
+
+//分类
++(void)getCategoryData:(dicBlock)block err:(errBlock)err;
+
 
 @end

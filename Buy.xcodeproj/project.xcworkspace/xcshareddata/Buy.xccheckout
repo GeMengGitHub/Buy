@@ -13,7 +13,7 @@
 		<key>557E0688555A2685B255CF447CE830855D135295</key>
 		<string>https://github.com/Chakery/Buy.git</string>
 		<key>b3ea32e5-604c-4fca-b5db-6ae888a3e4b3++5760</key>
-		<string>http://yangj.5166.info/1000phone/iOS/trunk/iOS/Network/douban/codes/00-%25E7%25BD%2591%25E7%25BB%259C0-JSON%25E8%25A7%25A3%25E6%259E%2590/0-DoubanBoo/SDWebImage</string>
+		<string>http://yangj.5166.info/1000phone/iOS/trunk/iOS/Network/douban/codes/00-%252525252525E7%252525252525BD%25252525252591%252525252525E7%252525252525BB%2525252525259C0-JSON%252525252525E8%252525252525A7%252525252525A3%252525252525E6%2525252525259E%25252525252590/0-DoubanBoo/SDWebImage</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Buy.xcodeproj</string>
@@ -22,7 +22,7 @@
 		<key>557E0688555A2685B255CF447CE830855D135295</key>
 		<string>../..</string>
 		<key>b3ea32e5-604c-4fca-b5db-6ae888a3e4b3++5760</key>
-		<string>../..Buy/Libs/SDWebImage/</string>
+		<string>../..Buy/Libs/SDWebImage</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
 	<dict>

@@ -21,6 +21,9 @@
 -(void)setScrollViewWithArray:(NSArray *)array{
     //设置HeaderView背景色
     self.backgroundColor = [UIColor whiteColor];
+//    CGRect mianR = self.frame;
+//    mianR.size.height = 320;
+//    self.frame = mianR;
     
     //获取图片数组
     NSMutableArray *imageArray = [[NSMutableArray alloc]init];
@@ -64,17 +67,28 @@
 //设置内容提示栏
 -(void)setCellHeader{
     CGRect r = [UIScreen mainScreen].bounds;
-    UIView *view = [[UIView alloc]init];
-    view.frame = CGRectMake(0.0f, 290.0f, r.size.width, 30.0f);
-    view.backgroundColor = COLOR(240, 240, 240, 1);
-    [self addSubview:view];
+    UIView *cellHeaderview = [[UIView alloc]init];
+    cellHeaderview.frame = CGRectMake(0.0f, 290.0f, r.size.width, 30.0f);
+    cellHeaderview.backgroundColor = COLOR(240, 240, 240, 1);
+    [self addSubview:cellHeaderview];
     
     UIImage *image = [[UIImage imageNamed:@"icon_time.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     UIButton *button = [[UIButton alloc]init];
-    button.frame = CGRectMake(0.0f, 4.0f, 80.0f, 18.0f);
+    button.frame = CGRectMake(4.0f, 6.0f, 100.0f, 18.0f);
     [button setImage:image forState:UIControlStateNormal];
-    [view addSubview:button];
+    [button setTitle:[NSString stringWithFormat:@"%@更新",[self nowTime]] forState:UIControlStateNormal];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, -4.0f)];
+    [button setTitleColor:COLOR(65, 181, 55, 1) forState:UIControlStateNormal];
+    [cellHeaderview addSubview:button];
+}
+
+//获取当前时间
+-(NSString *)nowTime{
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"HH:ss"];
+    return [formatter stringFromDate:date];
 }
 
 //按钮点击事件
