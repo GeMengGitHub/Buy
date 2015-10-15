@@ -71,14 +71,20 @@
 //获取数据
 -(void)getData{
     [NetWoking getHomeDataWithPage:_page data:^(NSDictionary *dic) {
-        _adArray = [BannerListModel setModelWithArray:dic[@"bannerList"]];
-        _menuArray = [CategoryListModel setModelWithArray:dic[@"categoryList"]];
-        if (_page == 0) {
-            [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
-        } else {
-            NSArray *array = [ShareListModel setModelWithArray:dic[@"shareList"]];
-            for (ShareListModel *model in array) {
-                [_dataArray addObject:model];
+        if ([dic[@"bannerList"] count] > 0) {
+            _adArray = [BannerListModel setModelWithArray:dic[@"bannerList"]];
+        }
+        if ([dic[@"categoryList"] count] > 0) {
+            _menuArray = [CategoryListModel setModelWithArray:dic[@"categoryList"]];
+        }
+        if ([dic[@"shareList"] count] > 0) {
+            if (_page == 0) {
+                [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
+            } else {
+                NSArray *array = [ShareListModel setModelWithArray:dic[@"shareList"]];
+                for (ShareListModel *model in array) {
+                    [_dataArray addObject:model];
+                }
             }
         }
         

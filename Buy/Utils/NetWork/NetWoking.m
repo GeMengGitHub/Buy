@@ -68,6 +68,31 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         err();
         
-    }];}
+    }];
+}
+
+
++(void)getCategoryDataWithPage:(int)page categoryId:(NSString *)categoryId data:(dicBlock)block err:(errBlock)err{
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+    [dic setObject:APPINFO forKey:@"appinfo"];
+    [dic setObject:[DeviceManager deviceinfo] forKey:@"deviceinfo"];
+    [dic setObject:[DeviceManager timeStamp] forKey:@"time_stamp"];
+    [dic setObject:[NSString stringWithFormat:@"%d", page*20] forKey:@"start"];
+    [dic setObject:@"20" forKey:@"count"];
+    [dic setObject:categoryId forKey:@"category_id"];
+    [dic setObject:@"-1" forKey:@"tag_id"];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager POST:API_CATEGORY_DATA parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        block(dic);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        err();
+        
+    }];
+}
 
 @end

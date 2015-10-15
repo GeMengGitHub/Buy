@@ -22,5 +22,7 @@ typedef void(^dicBlock)(NSDictionary *dic);
 //分类
 +(void)getCategoryData:(dicBlock)block err:(errBlock)err;
 
+//分类数据
++(void)getCategoryDataWithPage:(int)page categoryId:(NSString *)categoryId data:(dicBlock)block err:(errBlock)err;
 
 @end

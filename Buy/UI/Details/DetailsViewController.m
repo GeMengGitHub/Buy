@@ -64,6 +64,7 @@
 //设置导航栏
 -(void)setNavigation{
     //标题
+   
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.frame = CGRectMake(0, 0, 100, 44);
     titleLabel.textAlignment = NSTextAlignmentCenter;

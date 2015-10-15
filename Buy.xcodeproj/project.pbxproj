@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B0421B441BCF9C6900A837C1 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0421B431BCF9C6900A837C1 /* Info.plist */; };
+		B0421B471BCF9E5B00A837C1 /* CategotyListCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B0421B461BCF9E5B00A837C1 /* CategotyListCollectionViewCell.m */; };
 		B046E9811BCB4853007F31BD /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B046E9801BCB4853007F31BD /* DetailsViewController.m */; };
 		B046E9841BCB4C4C007F31BD /* DetailsCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B046E9831BCB4C4C007F31BD /* DetailsCollectionReusableView.m */; };
 		B046EA0B1BCB4F35007F31BD /* keyboard_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = B046E9871BCB4F35007F31BD /* keyboard_bg.png */; };
@@ -463,6 +465,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B0421B431BCF9C6900A837C1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0421B451BCF9E5B00A837C1 /* CategotyListCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategotyListCollectionViewCell.h; sourceTree = "<group>"; };
+		B0421B461BCF9E5B00A837C1 /* CategotyListCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategotyListCollectionViewCell.m; sourceTree = "<group>"; };
 		B046E97F1BCB4853007F31BD /* DetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
 		B046E9801BCB4853007F31BD /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
 		B046E9821BCB4C4C007F31BD /* DetailsCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsCollectionReusableView.h; sourceTree = "<group>"; };
@@ -630,7 +635,6 @@
 		B078FBC51BCD37CF00F2FF9C /* CategotyListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategotyListViewController.h; sourceTree = "<group>"; };
 		B078FBC61BCD37CF00F2FF9C /* CategotyListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategotyListViewController.m; sourceTree = "<group>"; };
 		B0B5E4471BC7F13000B2F33D /* Buy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Buy.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B0B5E44B1BC7F13000B2F33D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0B5E44C1BC7F13000B2F33D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B0B5E44E1BC7F13000B2F33D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B0B5E44F1BC7F13000B2F33D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1282,7 +1286,7 @@
 		B0B5E44A1BC7F13000B2F33D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B0B5E44B1BC7F13000B2F33D /* Info.plist */,
+				B0421B431BCF9C6900A837C1 /* Info.plist */,
 				B0B5E44C1BC7F13000B2F33D /* main.m */,
 			);
 			name = "Supporting Files";
@@ -1358,6 +1362,8 @@
 				B078FBC31BCD2B4D00F2FF9C /* CategoryCollectionViewCell.m */,
 				B078FBC51BCD37CF00F2FF9C /* CategotyListViewController.h */,
 				B078FBC61BCD37CF00F2FF9C /* CategotyListViewController.m */,
+				B0421B451BCF9E5B00A837C1 /* CategotyListCollectionViewCell.h */,
+				B0421B461BCF9E5B00A837C1 /* CategotyListCollectionViewCell.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2202,6 +2208,7 @@
 				B0B5E6741BC7FE6000B2F33D /* icon_find_tabbar@3x.png in Resources */,
 				B0B5E64B1BC7FE6000B2F33D /* icon_back@2x.png in Resources */,
 				B0B5E6FD1BC7FE6000B2F33D /* web_icon_forward_diable@2x.png in Resources */,
+				B0421B441BCF9C6900A837C1 /* Info.plist in Resources */,
 				B0B5E6671BC7FE6000B2F33D /* icon_eat@2x.png in Resources */,
 				B0B5E6321BC7FE6000B2F33D /* bg_like@3x.png in Resources */,
 				B0B5E63A1BC7FE6000B2F33D /* black_back_highlight@3x.png in Resources */,
@@ -2357,6 +2364,7 @@
 				B0B5E5151BC7F41600B2F33D /* BaseTabBarViewController.m in Sources */,
 				B0B5E51E1BC7F54D00B2F33D /* FoundViewController.m in Sources */,
 				B046E9811BCB4853007F31BD /* DetailsViewController.m in Sources */,
+				B0421B471BCF9E5B00A837C1 /* CategotyListCollectionViewCell.m in Sources */,
 				B0B5E4F71BC7F21E00B2F33D /* FMDatabaseAdditions.m in Sources */,
 				B0B5E5041BC7F21E00B2F33D /* UIScrollView+JHRefresh.m in Sources */,
 				B078FBC11BCCE9F800F2FF9C /* CategorySubModel.m in Sources */,

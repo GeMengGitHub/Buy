@@ -34,7 +34,7 @@
 #define API_HOME @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
 #define API_PERHAPS @"http://www.hehe168.com/mapi.php?act=recommends"
 #define API_CATEGORY @"http://www.hehe168.com/mapi.php?act=getCategories&c=2"
-
+#define API_CATEGORY_DATA @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
 
 
 

@@ -31,6 +31,10 @@
     [self setCollectionView];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.tabBarController.tabBar.hidden = NO;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -168,8 +172,11 @@
 
 //Collection点击方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    CategoryModel *model = _dataArray[indexPath.section];
     CategotyListViewController *viewController = [[CategotyListViewController alloc]init];
+    viewController.index = (int)indexPath.row;
     viewController.dataArray = _contentArray;
+    viewController.myTitle = model.name;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
