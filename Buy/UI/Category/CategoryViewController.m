@@ -27,6 +27,7 @@
     [super viewDidLoad];
     [self setNavigation];
     [self setInit];
+    [self getLocalData];
     [self getData];
     [self setLeftView];
     [self setCollectionView];
@@ -63,10 +64,21 @@
         if ([dic[@"catList"] count] > 0) {
             _dataArray = [CategoryModel setModelWithArray:dic[@"catList"]];
             [self setLeftViewItem];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [DBManager writeCategoryWithArray:_dataArray];
+            });
         }
     } err:^{
         
     }];
+}
+
+//获取本地数据
+-(void)getLocalData{
+    _dataArray = [CategoryModel setModelWithArray:[DBManager readCategoryWithWhere:nil]];
+    if (_dataArray.count > 0) {
+        [_collectionView reloadData];
+    }
 }
 
 //设置左侧栏

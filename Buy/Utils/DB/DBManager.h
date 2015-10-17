@@ -22,4 +22,12 @@
 +(void)writeShareListWithArray:(NSArray *)array;
 +(NSArray *)readShareListWithWhere:(NSDictionary *)dic;
 
+//分类页面
++(void)writeCategoryWithArray:(NSArray *)array;
++(NSArray *)readCategoryWithWhere:(NSDictionary *)dic;
+
+//分类子类
++(void)writeCategorySubWithArray:(NSArray *)array;
++(NSArray *)readCategorySubWithWhere:(NSDictionary *)dic;
+
 @end

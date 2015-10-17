@@ -55,8 +55,12 @@
 //首页数据
 #define TABLE_SHARELIST @"ShareList"
 #define TABLE_SHARELIST_ARRAY @[@"width2",@"source",@"url",@"low",@"type",@"best_desc",@"share_id",@"icon",@"baike_url",@"name",@"source_title",@"is_strategy",@"detail_logo2",@"height",@"external_id",@"width",@"original_price",@"height2",@"is_free_shipping",@"desc",@"price",@"like",@"goods_url",@"detail_logo",]
-
-
+//分类
+#define TABLE_CATEGORY @"Category"
+#define TABLE_CATEGORY_ARRAY @[@"parent_id",@"is_list",@"cat_id",@"name",@"logo"]
+//分类子类
+#define TABLE_CATEGORYSUB @"CategorySub"
+#define TABLE_CATEGORYSUB_ARRAY @[@"parent_id",@"cat_id",@"name",@"logo"]
 
 
 

@@ -8,6 +8,8 @@
 
 #import "AlertManager.h"
 
+#define COLOR(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+
 @interface AlertManager ()
 @property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingView;
@@ -32,7 +34,6 @@
     manager.bgView.frame = [UIScreen mainScreen].bounds;
     manager.bgView.backgroundColor = COLOR(0, 0, 0, 1);
 
-    
     //转动的菊花
     manager.loadingView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [manager.loadingView startAnimating];
@@ -65,7 +66,7 @@
     [view bringSubviewToFront:manager.bgView];
 }
 
-+(void)hidden{
++(void)dismiss{
     AlertManager *manager = [AlertManager defaultAlert];
     manager.bgView.hidden = YES;
 }

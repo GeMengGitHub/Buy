@@ -11,10 +11,13 @@
 #import "BannerListModel.h"
 #import "CategoryListModel.h"
 #import "ShareListModel.h"
+#import "CategoryModel.h"
+#import "CategorySubModel.h"
 
 @implementation DBManager
 
-//滚动图片
+
+//*******************************************滚动图片***************************************//
 +(void)writeBannerListWithArray:(NSArray *)array{
     CGYDB *db = [[CGYDB alloc]init];
     BOOL open = [db openDatabaseWithName:DATABASE_NAME];
@@ -44,14 +47,14 @@
     CGYDB *db = [[CGYDB alloc]init];
     BOOL open = [db openDatabaseWithName:DATABASE_NAME];
     if (open) {
-        array = [db select:TABLE_BANNERLIST withWhere:nil];
+        array = [db select:TABLE_BANNERLIST withWhere:dic];
         [db closeDatabase];
     }
     return array;
 }
 
 
-//菜单
+//*******************************************菜单***************************************//
 +(void)writeCategoryListWithArray:(NSArray *)array{
     CGYDB *db = [[CGYDB alloc]init];
     BOOL open = [db openDatabaseWithName:DATABASE_NAME];
@@ -83,15 +86,14 @@
     CGYDB *db = [[CGYDB alloc]init];
     BOOL open = [db openDatabaseWithName:DATABASE_NAME];
     if (open) {
-        array = [db select:TABLE_CATEGORYLIST withWhere:nil];
+        array = [db select:TABLE_CATEGORYLIST withWhere:dic];
         [db closeDatabase];
     }
     return array;
 }
 
 
-
-//首页数据
+//*******************************************首页数据***************************************//
 +(void)writeShareListWithArray:(NSArray *)array{
     CGYDB *db = [[CGYDB alloc]init];
     BOOL open = [db openDatabaseWithName:DATABASE_NAME];
@@ -139,7 +141,84 @@
     CGYDB *db = [[CGYDB alloc]init];
     BOOL open = [db openDatabaseWithName:DATABASE_NAME];
     if (open) {
-        array = [db select:TABLE_SHARELIST withWhere:nil];
+        array = [db select:TABLE_SHARELIST withWhere:dic];
+        [db closeDatabase];
+    }
+    return array;
+}
+
+
+//****************************************分类页面******************************************//
++(void)writeCategoryWithArray:(NSArray *)array{
+    CGYDB *db = [[CGYDB alloc]init];
+    BOOL open = [db openDatabaseWithName:DATABASE_NAME];
+    if (open) {
+        [db del:TABLE_CATEGORY withWhere:nil];
+        [db del:TABLE_CATEGORYSUB withWhere:nil];
+        for (CategoryModel *model in array) {
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+            [dic setObject:model.parent_id ? model.parent_id : @" " forKey:@"parent_id"];
+            [dic setObject:model.is_list ? model.is_list : @" " forKey:@"is_list"];
+            [dic setObject:model.cat_id ? model.cat_id : @" " forKey:@"cat_id"];
+            [dic setObject:model.name ? model.name : @" " forKey:@"name"];
+            [dic setObject:model.logo ? model.logo : @" " forKey:@"logo"];
+            if (model.subList) {
+                [self writeCategorySubWithArray:model.subList];
+            }
+
+            //如果已经存在、就删除后重新插入
+            [db insertInto:TABLE_CATEGORY WithDictionary:dic];
+        }
+        [db closeDatabase];
+    }
+}
++(NSArray *)readCategoryWithWhere:(NSDictionary *)dic{
+    NSArray *array = nil;
+    NSMutableArray *dataArray = [[NSMutableArray alloc]init];
+    
+    CGYDB *db = [[CGYDB alloc]init];
+    BOOL open = [db openDatabaseWithName:DATABASE_NAME];
+    if (open) {
+        array = [db select:TABLE_CATEGORY withWhere:dic];
+        //遍历数组去查找子类
+        [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSLog(@"%@", obj);
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithDictionary:obj];
+            NSArray *subArr = [self readCategorySubWithWhere:@{@"parent_id":obj[@"cat_id"]}];
+            [dic setValue:subArr forKey:@"subList"];
+            [dataArray addObject:dic];
+        }];
+        
+        [db closeDatabase];
+    }
+    return dataArray;
+}
+
+
+//****************************************分类子类******************************************//
++(void)writeCategorySubWithArray:(NSArray *)array{
+    CGYDB *db = [[CGYDB alloc]init];
+    BOOL open = [db openDatabaseWithName:DATABASE_NAME];
+    if (open) {
+        for (CategorySubModel *model in array) {
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+            [dic setObject:model.parent_id ? model.parent_id : @" " forKey:@"parent_id"];
+            [dic setObject:model.cat_id ? model.cat_id : @" " forKey:@"cat_id"];
+            [dic setObject:model.name ? model.name : @" " forKey:@"name"];
+            [dic setObject:model.logo ? model.logo : @" " forKey:@"logo"];
+            
+            //如果已经存在、就删除后重新插入
+            [db insertInto:TABLE_CATEGORYSUB WithDictionary:dic];
+        }
+        [db closeDatabase];
+    }
+}
++(NSArray *)readCategorySubWithWhere:(NSDictionary *)dic{
+    NSArray *array = nil;
+    CGYDB *db = [[CGYDB alloc]init];
+    BOOL open = [db openDatabaseWithName:DATABASE_NAME];
+    if (open) {
+        array = [db select:TABLE_CATEGORYSUB withWhere:dic];
         [db closeDatabase];
     }
     return array;

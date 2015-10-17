@@ -36,6 +36,8 @@
             [db createTabelWithName:TABLE_BANNERLIST withArray:TABLE_BANNERLIST_ARRAY];
             [db createTabelWithName:TABLE_CATEGORYLIST withArray:TABLE_CATEGORYLIST_ARRAY];
             [db createTabelWithName:TABLE_SHARELIST withArray:TABLE_SHARELIST_ARRAY];
+            [db createTabelWithName:TABLE_CATEGORY withArray:TABLE_CATEGORY_ARRAY];
+            [db createTabelWithName:TABLE_CATEGORYSUB withArray:TABLE_CATEGORYSUB_ARRAY];
             [db closeDatabase];
         }
     }

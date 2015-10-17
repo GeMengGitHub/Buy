@@ -133,7 +133,7 @@
             web.url = API_TAOBAO;
             web.showShareButton = NO;
             [self.navigationController pushViewController:web animated:YES];
-            [AlertManager hidden];
+            [AlertManager dismiss];
         }
             break;
         case 2:
@@ -144,7 +144,7 @@
             web.url = API_JINGDONG;
             web.showShareButton = NO;
             [self.navigationController pushViewController:web animated:YES];
-            [AlertManager hidden];
+            [AlertManager dismiss];
         }
             break;
         case 3:
@@ -181,7 +181,7 @@
 //检查新版本
 -(void)updateVersion{
     [NetWoking getVersion:^(NSString *str) {
-        [AlertManager hidden];
+        [AlertManager dismiss];
         
         //获取app当前版本号
         NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];

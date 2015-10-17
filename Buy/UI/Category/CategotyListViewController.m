@@ -71,13 +71,13 @@
         [view reloadData];
         [view headerEndRefreshingWithResult:JHRefreshResultNone];
         [view footerEndRefreshing];
-        [AlertManager hidden];
+        [AlertManager dismiss];
         
     } err:^{
         [view reloadData];
         [view headerEndRefreshingWithResult:JHRefreshResultNone];
         [view footerEndRefreshing];
-        [AlertManager hidden];
+        [AlertManager dismiss];
         
     }];
     

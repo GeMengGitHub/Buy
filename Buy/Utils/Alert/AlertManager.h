@@ -10,5 +10,5 @@
 
 @interface AlertManager : UIView
 +(void)showForView:(UIView *)view show:(BOOL)isShow;
-+(void)hidden;
++(void)dismiss;
 @end
