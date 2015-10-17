@@ -30,6 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setInit];
+    [self getLocalData];
     [self getData];
     [self setCollectionView];
     [self setScrollViewTopView];
@@ -61,6 +62,7 @@
     searchButton.tintColor = [UIColor whiteColor];
     UIImage *image = [[UIImage imageNamed:@"homeViewSearch_icon.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [searchButton setImage:image forState:UIControlStateNormal];
+    [searchButton setImage:image forState:UIControlStateHighlighted];
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
     self.navigationItem.rightBarButtonItem = barButton;
 
@@ -70,12 +72,19 @@
 
 //获取数据
 -(void)getData{
+    
     [NetWoking getHomeDataWithPage:_page data:^(NSDictionary *dic) {
         if ([dic[@"bannerList"] count] > 0) {
             _adArray = [BannerListModel setModelWithArray:dic[@"bannerList"]];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [DBManager writeBannerListWithArray:_adArray];
+            });
         }
         if ([dic[@"categoryList"] count] > 0) {
             _menuArray = [CategoryListModel setModelWithArray:dic[@"categoryList"]];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [DBManager writeCategoryListWithArray:_menuArray];
+            });
         }
         if ([dic[@"shareList"] count] > 0) {
             if (_page == 0) {
@@ -86,6 +95,10 @@
                     [_dataArray addObject:model];
                 }
             }
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [DBManager writeShareListWithArray:_dataArray];
+            });
         }
         
         //收起下拉刷新
@@ -101,7 +114,24 @@
         //收起上拉加载更多
         [_collectionView footerEndRefreshing];
     }];
+}
+
+//获取本地数据
+-(void)getLocalData{
+    _adArray = [BannerListModel setModelWithArray:[DBManager readBannerListWithWhere:nil]];
+    if (_adArray.count > 0) {
+        [_collectionView reloadData];
+    }
     
+    _menuArray = [CategoryListModel setModelWithArray:[DBManager readCategoryListWithWhere:nil]];
+    if (_menuArray.count > 0) {
+        [_collectionView reloadData];
+    }
+    
+    [_dataArray setArray:[ShareListModel setModelWithArray:[DBManager readShareListWithWhere:nil]]];
+    if (_dataArray.count > 0) {
+        [_collectionView reloadData];
+    }
 }
 
 //设置collectionView

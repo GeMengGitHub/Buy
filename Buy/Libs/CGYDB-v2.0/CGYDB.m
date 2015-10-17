@@ -32,15 +32,17 @@
     
     NSMutableString *sql = [[NSMutableString alloc]init];
     [sql appendFormat:@"CREATE TABLE IF NOT EXISTS %@", tableName];
-    [sql appendString:@"(sid INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0"];
+//    [sql appendString:@"(sid INTEGER PRIMARY KEY AUTOINCREMENT DEFAULT 0"];
+    [sql appendString:@"("];
     for (NSString *str in array) {
-        [sql appendFormat:@", %@ text", str];
+//        [sql appendFormat:@", %@ text", str];
+        [sql appendFormat:@" %@ varchar(32),", str];
     }
     if ([@"," isEqualToString:[sql substringWithRange:NSMakeRange(sql.length-1, 1)]]) {
         [sql setString:[sql substringToIndex:sql.length-1]];
     }
     [sql appendString:@")"];
-    NSLog(@"%@", sql);//show sql
+    //NSLog(@"%@", sql);//show sql
     return [_dataBase executeUpdate:sql];
 }
 
@@ -67,7 +69,7 @@
         [sql setString:[sql substringToIndex:sql.length-1]];
     }
     [sql appendString:@")"];
-    NSLog(@"%@",sql);//show sql
+    //NSLog(@"%@",sql);//show sql
     return [_dataBase executeUpdate:sql withParameterDictionary:dic];
 }
 

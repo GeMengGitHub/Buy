@@ -25,6 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setNavigation];
     [self setInit];
     [self getData];
     [self setLeftView];
@@ -39,9 +40,8 @@
     [super didReceiveMemoryWarning];
 }
 
-//初始化
--(void)setInit{
-    self.view.backgroundColor = [UIColor whiteColor];
+//设置导航
+-(void)setNavigation{
     //设置navigation
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.frame = CGRectMake(0, 20, 100, 44);
@@ -50,7 +50,11 @@
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.text = @"分类";
     self.navigationItem.titleView = titleLabel;
+}
 
+//初始化
+-(void)setInit{
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 //获取网络数据

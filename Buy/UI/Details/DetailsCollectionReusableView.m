@@ -275,17 +275,6 @@
     la = [NSLayoutConstraint constraintWithItem:_liekNameLable attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:18.0f];
     [_bgview addConstraint:la];
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
 
 @end

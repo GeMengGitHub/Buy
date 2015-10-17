@@ -29,4 +29,5 @@
 - (void)clearDisk;
 - (void)cleanDisk;
 
+- (float)checkTmpSize;
 @end

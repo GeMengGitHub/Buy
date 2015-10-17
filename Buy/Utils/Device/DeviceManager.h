@@ -30,4 +30,8 @@
 
 +(CGFloat)height;
 
++(CGFloat)frameWidth;
+
++(CGFloat)frameHeight;
+
 @end

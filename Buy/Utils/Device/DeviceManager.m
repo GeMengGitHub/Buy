@@ -71,4 +71,14 @@
     return rect.size.height * scale;
 }
 
++(CGFloat)frameWidth{
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    return rect.size.width;
+}
+
++(CGFloat)frameHeight{
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    return rect.size.height;
+}
+
 @end

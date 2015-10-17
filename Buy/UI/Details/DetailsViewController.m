@@ -40,7 +40,6 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    _dataArray = [[NSMutableArray alloc]init];
     self.navigationController.tabBarController.tabBar.userInteractionEnabled = YES;
     self.navigationController.tabBarController.tabBar.hidden = YES;
 }
@@ -94,6 +93,9 @@
     [shareButton setImage:[UIImage imageNamed:@"icon_share_highlight.png"] forState:UIControlStateHighlighted];
     UIBarButtonItem *shareButtonItem = [[UIBarButtonItem alloc]initWithCustomView:shareButton];
     self.navigationItem.rightBarButtonItem = shareButtonItem;
+    
+    //初始化数据
+    _dataArray = [[NSMutableArray alloc]init];
 }
 
 -(void)navButtonClick:(UIButton *)button{

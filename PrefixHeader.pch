@@ -9,8 +9,11 @@
 #ifndef Buy_PrefixHeader_pch
 #define Buy_PrefixHeader_pch
 
+#define APP_STORE_ID @"id1044488392"
+#define VERSION_UPDATE @"http://itunes.apple.com/lookup?id=1044488392"
+
 #import "AFNetworking.h"
-#import "CGYDB.h"
+#import "DBManager.h"
 #import "JHRefresh.h"
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"
@@ -18,16 +21,17 @@
 #import "DeviceManager.h"
 #import "NetWoking.h"
 #import "TQRichTextView.h"
+#import "CacheManager.h"
+#import "AlertManager.h"
 #import "ZJModelTool.h"
 
 #define COLOR(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 
-//TabBar
+//tabBar
 #define TABBAR_NAME @[@"首页",@"分类",@"发现",@"我的"]
 #define TABBAR_IMAGE @[@"icon_home_tabbar.png",@"icon_sort_tabbar.png",@"icon_find_tabbar.png",@"icon_my_tabbar.png"]
 #define TABBAR_IMAGE2 @[@"icon_home_tabbar_selected.png",@"icon_sort_tabbar_selected.png",@"icon_find_tabbar_selected.png",@"icon_my_tabbar_selected.png"]
-
-
+//app info
 #define APPINFO @{@"app_name" : @"禾禾小镇",@"mobile_type" : @"ios",@"version_code" : @"1.3.6"}
 
 //API
@@ -35,13 +39,22 @@
 #define API_PERHAPS @"http://www.hehe168.com/mapi.php?act=recommends"
 #define API_CATEGORY @"http://www.hehe168.com/mapi.php?act=getCategories&c=2"
 #define API_CATEGORY_DATA @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
+#define API_FOUND @"http://www.hehe168.com/mapi.php?act=getCategories&parent_id=300"
+#define API_FOUND_LIST @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
+#define API_TAOBAO @"http://h5.m.taobao.com/awp/mtb/mtb.htm"
+#define API_JINGDONG @"http://home.m.jd.com/myJd/home.action"
 
-
-
-
-
-
-
+//database
+#define DATABASE_NAME @"buy"
+//滚动广告
+#define TABLE_BANNERLIST @"bannerList"
+#define TABLE_BANNERLIST_ARRAY @[@"name",@"desc",@"category",@"type2",@"id2",@"is_list",@"type",@"logo",@"logo2"]
+//菜单
+#define TABLE_CATEGORYLIST @"CategoryList"
+#define TABLE_CATEGORYLIST_ARRAY @[@"id2",@"category",@"cat_id",@"m_index_id",@"type",@"type2",@"logo",@"is_list",@"icon",@"desc",@"is_red",@"name"]
+//首页数据
+#define TABLE_SHARELIST @"ShareList"
+#define TABLE_SHARELIST_ARRAY @[@"width2",@"source",@"url",@"low",@"type",@"best_desc",@"share_id",@"icon",@"baike_url",@"name",@"source_title",@"is_strategy",@"detail_logo2",@"height",@"external_id",@"width",@"original_price",@"height2",@"is_free_shipping",@"desc",@"price",@"like",@"goods_url",@"detail_logo",]
 
 
 

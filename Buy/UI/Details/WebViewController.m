@@ -3,7 +3,7 @@
 //  Buy
 //
 //  Created by qf on 15/10/12.
-//  Copyright (c) 2015年 Chakery. All rights reserved.
+//  Copyright (c) 2015年 . All rights reserved.
 //
 
 #import "WebViewController.h"
@@ -19,12 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self setNavigation];
     [self setWebView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name: UIKeyboardWillShowNotification object:nil];
 }
 
 -(void)setNavigation{
@@ -82,13 +87,23 @@
     _webView.frame = CGRectMake(0, 0, r.size.width, r.size.height - 64);
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
     //关闭弹簧
-    [[_webView subviews][0] setBounces:NO];
+    
+    _webView.keyboardDisplayRequiresUserAction = NO;
+    //[[_webView subviews][0] setBounces:NO];
     _webView.delegate = self;
     [self.view addSubview:_webView];
+    
+    
+//    [[UIApplication sharedApplication].keyWindow setWindowLevel:UIWindowLevelStatusBar];
+//    [[[[UIApplication sharedApplication] delegate] window] makeKeyAndVisible];
+//    [[UIApplication sharedApplication].keyWindow addSubview:_webView];
+}
+
+-(void)keyboardWillShow:(NSNotification *)notification{
+    
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
-    
     [_activity removeFromSuperview];
     
     //标题
@@ -105,7 +120,10 @@
     } else {
         _shareButton.hidden = YES;
     }
+    
 }
+
+
 
 
 @end

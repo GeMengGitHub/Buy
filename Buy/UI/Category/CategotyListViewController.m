@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSMutableArray *contentArray;//显示的内容
 @property (nonatomic, assign) int page;//页面
 @property (nonatomic, assign) int currentShow;//当前显示第几个界面
-@property (nonatomic, strong) UIActivityIndicatorView *activity;//转动的小菊花
+//@property (nonatomic, strong) UIActivityIndicatorView *activity;//转动的小菊花
 
 @end
 
@@ -28,6 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setNavigation];
     [self setInit];
     [self setHeaderView];
     [self getDataWith:[_dataArray[_currentShow] cat_id]];
@@ -48,7 +49,7 @@
 //获取数据
 -(void)getDataWith:(NSString *)categoryId{
     //开启菊花
-    [_activity startAnimating];
+    [AlertManager showForView:self.view show:NO];
     
     //刷新界面
     UICollectionView *view = _mainScrollView.subviews[_currentShow];
@@ -70,22 +71,20 @@
         [view reloadData];
         [view headerEndRefreshingWithResult:JHRefreshResultNone];
         [view footerEndRefreshing];
-        [_activity stopAnimating];
+        [AlertManager hidden];
         
     } err:^{
         [view reloadData];
         [view headerEndRefreshingWithResult:JHRefreshResultNone];
         [view footerEndRefreshing];
-        [_activity stopAnimating];
+        [AlertManager hidden];
         
     }];
     
-    
 }
 
-//初始化
--(void)setInit{
-    self.view.backgroundColor = [UIColor whiteColor];
+//设置导航
+-(void)setNavigation{
     //返回按钮
     UIButton *backButton = [[UIButton alloc]init];
     backButton.frame = CGRectMake(0, 0, 44, 44);
@@ -107,6 +106,22 @@
     titleLabel.text = _myTitle;
     self.navigationItem.titleView = titleLabel;
     
+    //排序按钮
+    UIButton * orderbyButton = [[UIButton alloc]init];
+    orderbyButton.frame = CGRectMake(0, 0, 24, 24);
+    orderbyButton.tintColor = [UIColor whiteColor];
+    UIImage *image = [[UIImage imageNamed:@"icon_filter.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *image2 = [[UIImage imageNamed:@"icon_filter_highlight.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    [orderbyButton setImage:image forState:UIControlStateNormal];
+    [orderbyButton setImage:image2 forState:UIControlStateHighlighted];
+//    [orderbyButton addTarget:self action:@selector(fitleButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:orderbyButton];
+    self.navigationItem.rightBarButtonItem = barButton;
+}
+
+//初始化
+-(void)setInit{
+    self.view.backgroundColor = [UIColor whiteColor];
     
     //初始化 main scrollView
     _mainScrollView = [[UIScrollView alloc]init];
@@ -119,12 +134,12 @@
     [self.view addSubview:_mainScrollView];
     
     //初始化：转动的菊花
-    _activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    _activity.center = CGPointMake(self.view.frame.size.width/2, 200);
-    _activity.bounds = CGRectMake(0, 0, 100, 100);
-    _activity.backgroundColor = COLOR(0, 0, 0, 0.8);
-    _activity.layer.cornerRadius = 8;
-    [self.view addSubview:_activity];
+//    _activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//    _activity.center = CGPointMake(self.view.frame.size.width/2, 200);
+//    _activity.bounds = CGRectMake(0, 0, 100, 100);
+//    _activity.backgroundColor = COLOR(0, 0, 0, 0.8);
+//    _activity.layer.cornerRadius = 8;
+//    [self.view addSubview:_activity];
     
     //初始化页面
     _currentShow = _index;
@@ -296,5 +311,6 @@
     [_headerScrollView scrollRectToVisible:CGRectMake(button.frame.origin.x - 30, 0, main.size.width, 34) animated:YES];
     [self getDataWith:[_dataArray[_currentShow] cat_id]];
 }
+
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "CGYDB.h"
 #import "BaseTabBarViewController.h"
 
 @interface AppDelegate ()
@@ -17,11 +18,40 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    //初始化数据库
+    [self setInitDatabase];
+    
     BaseTabBarViewController *tabBar = [[BaseTabBarViewController alloc]init];
     self.window.rootViewController = tabBar;
     
     return YES;
+}
+
+//首次运行、创建数据库和表
+-(void)setInitDatabase{
+    if ([self firstRun]) {
+        CGYDB *db = [[CGYDB alloc]init];
+        BOOL open = [db openDatabaseWithName:DATABASE_NAME];
+        if (open) {
+            [db createTabelWithName:TABLE_BANNERLIST withArray:TABLE_BANNERLIST_ARRAY];
+            [db createTabelWithName:TABLE_CATEGORYLIST withArray:TABLE_CATEGORYLIST_ARRAY];
+            [db createTabelWithName:TABLE_SHARELIST withArray:TABLE_SHARELIST_ARRAY];
+            [db closeDatabase];
+        }
+    }
+}
+
+//判断是不是首次运行
+-(BOOL)firstRun{
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *str = [user objectForKey:@"firstRun"];
+    if ([str isEqualToString:@"1"]) {
+        return NO;
+    } else {
+        [user setObject:@"1" forKey:@"firstRun"];
+        [user synchronize];
+        return YES;
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
