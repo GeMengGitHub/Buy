@@ -64,7 +64,7 @@
         _nameLabel.userInteractionEnabled = YES;
         _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _nameLabel.textColor = [UIColor whiteColor];
-        _nameLabel.font = [UIFont systemFontOfSize:18.0f weight:200.0f];
+        _nameLabel.font = [UIFont systemFontOfSize:16.0f];
         _nameLabel.textAlignment = NSTextAlignmentCenter;
         [_bgView addSubview:_nameLabel];
         

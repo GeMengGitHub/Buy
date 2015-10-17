@@ -96,7 +96,7 @@
         itemButton.frame = CGRectMake(0, 40*(i-j), _leftView.frame.size.width, 40);
         itemButton.backgroundColor = COLOR(240, 240, 240, 1);
         [itemButton setTitle:model.name forState:UIControlStateNormal];
-        itemButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        itemButton.titleLabel.font = [UIFont systemFontOfSize:14];
         [itemButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         itemButton.tag = model.cat_id.intValue;
         [itemButton addTarget:self action:@selector(itemButtonClick:) forControlEvents:UIControlEventTouchUpInside];
