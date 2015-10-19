@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CategoryListModel.h"
 
 @protocol HeaderCollectionReusableViewDelegate <NSObject>
 //scrollView点击
 -(void)didSelectedScrollView:(NSInteger)index;
 //菜单点击
--(void)didSelectedMenu:(NSInteger)index;
+-(void)didSelectedMenu:(CategoryListModel *)model index:(NSInteger)index;
 @end
 
 

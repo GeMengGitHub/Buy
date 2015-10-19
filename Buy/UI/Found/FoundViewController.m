@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) NSMutableArray *dataArray;//数据源
+@property (nonatomic, strong) UITapGestureRecognizer *tap;//单点手势
 
 @end
 
@@ -27,12 +28,36 @@
     [super viewDidLoad];
     [self setNavigation];
     [self setInit];
-    [self getData];
-    [self setCollectionView];
+    [self netLinsting];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+/**
+ *  网络监听
+ */
+-(void)netLinsting{
+    [NetWoking netWokListeningWithOffTheNetForView:self.view off:^{
+        if (!_tap) {
+            _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reLoad)];
+            [self.view addGestureRecognizer:_tap];
+        }
+        
+    } on:^{
+        [self.view removeGestureRecognizer:_tap];
+        [self getData];
+        [self setCollectionView];
+        
+    }];
+}
+
+/**
+ *  重新加载
+ */
+-(void)reLoad{
+    [self netLinsting];
 }
 
 //设置导航

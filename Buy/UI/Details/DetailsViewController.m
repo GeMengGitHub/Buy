@@ -11,7 +11,7 @@
 #import "WebViewController.h"
 #import "DetailsCollectionViewCell.h"
 
-@interface DetailsViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, DetailsCollectionReusableViewDelegate>
+@interface DetailsViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, DetailsCollectionReusableViewDelegate,UMSocialUIDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) UIView *bottomView;//底部view
@@ -55,8 +55,9 @@
             [_dataArray setArray:[ShareListModel setModelWithArray:dic[@"recommends"]]];
             [_collectionView reloadData];
         }
+    } err:^{
         
-    } err:nil];
+    }];
 }
 
 
@@ -100,15 +101,15 @@
 
 -(void)navButtonClick:(UIButton *)button{
     switch (button.tag) {
-        case 111:
+        case 111: //返回上一页
         {
             [self.navigationController popViewControllerAnimated:YES];
         }
             break;
             
-        case 222:
+        case 222: //分享
         {
-            
+            [self shareWithContent:[NSString stringWithFormat:@"%@%@",_shareModel.url,_shareModel.name] title:_shareModel.name image:_shareModel.icon];
         }
             break;
             
@@ -117,6 +118,32 @@
     }
 }
 
+/**
+ *  分享
+ */
+-(void)shareWithContent:(NSString *)content title:(NSString *)title image:(NSString *)image{
+    //微信好友分享时显示的标题
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = title;
+    //QQ好友分享title
+    [UMSocialData defaultData].extConfig.qqData.title = title;
+    //QQ空间分享title
+    [UMSocialData defaultData].extConfig.qzoneData.title = title;
+    //图片分享
+    if (image) {
+        [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeImage url:image];
+    }
+    
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:UM_APPKEY
+                                      shareText:content
+                                     shareImage:nil
+                                shareToSnsNames:UM_SHARE
+                                       delegate:self];
+}
+
+/**
+ *  设置collectionView
+ */
 -(void)setCollectionView{
     CGRect r = [UIScreen mainScreen].bounds;
     _flowLayout = [[UICollectionViewFlowLayout alloc]init];
@@ -178,7 +205,9 @@
     _flowLayout.headerReferenceSize = CGSizeMake(470 + height, 0);
 }
 
-//底部view
+/**
+ *  底部：我的喜欢、立即购买
+ */
 -(void)setBottomView{
     CGRect main = [UIScreen mainScreen].bounds;
     _bottomView = [[UIView alloc]init];
@@ -201,7 +230,8 @@
     [_likeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_likeButton setImage:[UIImage imageNamed:@"icon_prise.png"] forState:UIControlStateNormal];
     [_likeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, -10.0f, 0.0f, 0.0f)];
-    [_likeButton setTitle:_shareModel.like forState:UIControlStateNormal];
+    //[_likeButton setTitle:_shareModel.like forState:UIControlStateNormal];
+    [_likeButton setTitle:@"我的喜欢" forState:UIControlStateNormal];
     [_likeButton addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_likeButton];
     
@@ -250,5 +280,30 @@
     webView.url = _shareModel.baike_url;
     [self.navigationController pushViewController:webView animated:YES];
 }
+
+/**
+ *  弹出列表方法presentSnsIconSheetView需要设置delegate为self
+ *
+ *  @return
+ */
+//-(BOOL)isDirectShareInIconActionSheet
+//{
+//    return YES;
+//}
+
+/**
+ *  分享完成时执行的回调
+ *
+ *  @param response 
+ */
+//-(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response
+//{
+//    //根据`responseCode`得到发送结果,如果分享成功
+//    if(response.responseCode == UMSResponseCodeSuccess)
+//    {
+//        //得到分享到的微博平台名
+//        NSLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
+//    }
+//}
 
 @end

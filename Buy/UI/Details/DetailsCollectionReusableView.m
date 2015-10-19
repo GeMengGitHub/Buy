@@ -54,7 +54,7 @@
         _contentTextView.text = model.best_desc;
     }
     
-    [_headerImageView setImageWithURL:[NSURL URLWithString:model.detail_logo]];
+    [_headerImageView setImageWithURL:[NSURL URLWithString:model.detail_logo] placeholderImage:[UIImage imageNamed:@"bg_default@3x.png"]];
     _titleLabel.text = model.name;
     _priceLabel.text = [NSString stringWithFormat:@"¥ %@", model.price];
     _oldPriceLabel.text = [NSString stringWithFormat:@"¥ %@", model.original_price];
@@ -74,7 +74,7 @@
         _freeShippingLabel.hidden = YES;
     }
     
-    //才你喜欢
+    //猜你喜欢
     [self setPerhapsLikeView];
 }
 

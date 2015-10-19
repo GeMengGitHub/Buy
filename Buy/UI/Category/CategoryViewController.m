@@ -17,8 +17,9 @@
 @property (nonatomic, strong) UIView *leftView;//左侧栏
 @property (nonatomic, strong) NSArray *dataArray;//数据源
 @property (nonatomic, strong) NSArray *contentArray;//子类数据源
-
-
+@property (nonatomic, strong) UIImageView *netWokImageView;//没有网络的图片
+@property (nonatomic, strong) UILabel *netLabel;//没有网络的标语
+@property (nonatomic, strong) UITapGestureRecognizer *tap;//重新加载单点手势
 @end
 
 @implementation CategoryViewController
@@ -26,14 +27,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigation];
-    [self setInit];
-    [self getLocalData];
-    [self getData];
-    [self setLeftView];
-    [self setCollectionView];
+    [self netLinsting];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.tabBarController.tabBar.hidden = NO;
 }
 
@@ -41,9 +40,35 @@
     [super didReceiveMemoryWarning];
 }
 
-//设置导航
+/**
+ *  网络监听
+ */
+-(void)netLinsting{
+    [NetWoking netWokListeningWithOffTheNetForView:self.view off:^{
+        if (!_tap) {
+            _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reLoadView)];
+            [self.view addGestureRecognizer:_tap];
+        }
+        
+    } on:^{
+        [self.view removeGestureRecognizer:_tap];
+        [self getData];
+        [self setLeftView];
+        [self setCollectionView];
+    }];
+}
+
+/**
+ *  重新加载
+ */
+-(void)reLoadView{
+    [self netLinsting];
+}
+
+/**
+ *  设置导航
+ */
 -(void)setNavigation{
-    //设置navigation
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.frame = CGRectMake(0, 20, 100, 44);
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -53,9 +78,11 @@
     self.navigationItem.titleView = titleLabel;
 }
 
-//初始化
+/**
+ *  初始化
+ */
 -(void)setInit{
-    self.view.backgroundColor = [UIColor whiteColor];
+    //self.view.backgroundColor = [UIColor whiteColor];
 }
 
 //获取网络数据
@@ -64,9 +91,12 @@
         if ([dic[@"catList"] count] > 0) {
             _dataArray = [CategoryModel setModelWithArray:dic[@"catList"]];
             [self setLeftViewItem];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [DBManager writeCategoryWithArray:_dataArray];
-            });
+            /**
+             *  子线程操作数据库,把数据缓存到本地
+             */
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                [DBManager writeCategoryWithArray:_dataArray];
+//            });
         }
     } err:^{
         
@@ -74,12 +104,12 @@
 }
 
 //获取本地数据
--(void)getLocalData{
-    _dataArray = [CategoryModel setModelWithArray:[DBManager readCategoryWithWhere:nil]];
-    if (_dataArray.count > 0) {
-        [_collectionView reloadData];
-    }
-}
+//-(void)getLocalData{
+//    _dataArray = [CategoryModel setModelWithArray:[DBManager readCategoryWithWhere:nil]];
+//    if (_dataArray.count > 0) {
+//        [_collectionView reloadData];
+//    }
+//}
 
 //设置左侧栏
 -(void)setLeftView{
@@ -130,7 +160,11 @@
     }
 }
 
-//左侧按钮点击事件
+/**
+ *  左侧按钮点击事件
+ *
+ *  @param button 被点击的按钮
+ */
 -(void)itemButtonClick:(UIButton *)button{
     NSArray *views = _leftView.subviews;
     [views enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

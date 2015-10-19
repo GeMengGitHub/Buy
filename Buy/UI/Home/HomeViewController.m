@@ -247,8 +247,60 @@
 }
 
 //HeaderCollectionReusableView协议方法（菜单按钮、滚动图片点击事件）
--(void)didSelectedMenu:(NSInteger)index{
-    
+-(void)didSelectedMenu:(CategoryListModel *)model index:(NSInteger)index{
+    NSLog(@"%@", model.cat_id);
+    switch (index) {
+        case 0:
+        {
+            
+        }
+            break;
+            
+        case 1:
+        {
+            
+        }
+            break;
+            
+        case 2:
+        {
+            
+        }
+            break;
+            
+        case 3:
+        {
+            
+        }
+            break;
+            
+        case 4:
+        {
+            
+        }
+            break;
+            
+        case 5:
+        {
+            
+        }
+            break;
+            
+        case 6:
+        {
+            
+        }
+            break;
+            
+        case 7:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 -(void)didSelectedScrollView:(NSInteger)index{

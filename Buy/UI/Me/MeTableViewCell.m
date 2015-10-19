@@ -13,8 +13,8 @@
 @property (nonatomic, strong) UILabel *nameLabel;
 //@property (nonatomic, strong) UIImageView *rightImageView;
 @property (nonatomic, strong) UILabel *rightLabel;
-@property (nonatomic, strong) UIView *bottomLineView;
-@property (nonatomic, strong) UIView *topLineView;
+//@property (nonatomic, strong) UIView *bottomLineView;
+//@property (nonatomic, strong) UIView *topLineView;
 
 @end
 
@@ -76,16 +76,16 @@
 //    _rightImageView.translatesAutoresizingMaskIntoConstraints = NO;
 //    [self addSubview:_rightImageView];
     
-    _bottomLineView = [[UIView alloc]init];
-    _bottomLineView.backgroundColor = COLOR(220, 220, 220, 1);
-    _bottomLineView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_bottomLineView];
+//    _bottomLineView = [[UIView alloc]init];
+//    _bottomLineView.backgroundColor = COLOR(220, 220, 220, 1);
+//    _bottomLineView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self addSubview:_bottomLineView];
     
     
-    _topLineView = [[UILabel alloc]init];
-    _topLineView.backgroundColor = COLOR(220, 220, 220, 1);
-    _topLineView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_topLineView];
+//    _topLineView = [[UILabel alloc]init];
+//    _topLineView.backgroundColor = COLOR(220, 220, 220, 1);
+//    _topLineView.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self addSubview:_topLineView];
     
     _rightLabel = [[UILabel alloc]init];
     _rightLabel.hidden = YES;
@@ -114,16 +114,16 @@
 //    [self addConstraints:layout];
     
     //底部横线
-    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_bottomLineView]-0-|" options:0 metrics:nil views:@{@"_bottomLineView":_bottomLineView}];
-    [self addConstraints:layout];
-    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomLineView(1)]-0-|" options:0 metrics:nil views:@{@"_bottomLineView":_bottomLineView}];
-    [self addConstraints:layout];
+//    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_bottomLineView]-0-|" options:0 metrics:nil views:@{@"_bottomLineView":_bottomLineView}];
+//    [self addConstraints:layout];
+//    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomLineView(1)]-0-|" options:0 metrics:nil views:@{@"_bottomLineView":_bottomLineView}];
+//    [self addConstraints:layout];
     
     //顶部线条
-    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_topLineView]-0-|" options:0 metrics:nil views:@{@"_topLineView":_topLineView}];
-    [self addConstraints:layout];
-    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_topLineView(1)]" options:0 metrics:nil views:@{@"_topLineView":_topLineView}];
-    [self addConstraints:layout];
+//    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_topLineView]-0-|" options:0 metrics:nil views:@{@"_topLineView":_topLineView}];
+//    [self addConstraints:layout];
+//    layout = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_topLineView(1)]" options:0 metrics:nil views:@{@"_topLineView":_topLineView}];
+//    [self addConstraints:layout];
     
     //右边内容栏
     layout = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[_rightLabel(>=0)]-20-|" options:0 metrics:nil views:@{@"_rightLabel":_rightLabel}];

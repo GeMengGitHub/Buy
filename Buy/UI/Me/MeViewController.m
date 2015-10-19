@@ -10,6 +10,14 @@
 #import "MeTableViewCell.h"
 #import "WebViewController.h"
 
+/**
+ TAG 值，用于区检查更新、清理缓存的提示框
+ */
+typedef enum : NSUInteger {
+    cacheTAG = 1000,// 清理缓存
+    updateTAG       // 监测更新
+} alertTAG;
+
 @interface MeViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -35,9 +43,10 @@
     [super didReceiveMemoryWarning];
 }
 
-//设置导航
+/**
+ *  设置navigation
+ */
 -(void)setNavigation{
-    //设置navigation
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.frame = CGRectMake(0, 20, 100, 44);
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -47,19 +56,23 @@
     self.navigationItem.titleView = titleLabel;
 }
 
-//初始化
+/**
+ *  初始化
+ */
 -(void)setInit{
     self.view.backgroundColor = [UIColor whiteColor];
     _dataArray = [[NSMutableArray alloc]init];
     [_dataArray addObject:@{@"image":@"icon_like.png",@"name":@"我喜欢的"}];
     [_dataArray addObject:@{@"image":@"icon_taobao.png",@"name":@"淘宝订单"}];
     [_dataArray addObject:@{@"image":@"icon_jingdong.png",@"name":@"京东订单"}];
-    [_dataArray addObject:@{@"image":@"icon_feedback.png",@"name":@"意见反馈"}];
+    [_dataArray addObject:@{@"image":@"icon_heartCart.png",@"name":@"给我评分"}];
     [_dataArray addObject:@{@"image":@"icon_cleanCache.png",@"name":@"清空缓存"}];
     [_dataArray addObject:@{@"image":@"icon_about.png",@"name":@"检查更新"}];
 }
 
-//设置tableView
+/**
+ *  设置tableView
+ */
 -(void)setTableView{
     _tableView = [[UITableView alloc]init];
     _tableView.delegate = self;
@@ -120,12 +133,12 @@
 //点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.section) {
-        case 0:
+        case 0: // 我的喜欢
         {
             
         }
             break;
-        case 1:
+        case 1: // 我的淘宝
         {
             [AlertManager showForView:self.view show:NO];
             WebViewController *web = [[WebViewController alloc]init];
@@ -136,7 +149,7 @@
             [AlertManager dismiss];
         }
             break;
-        case 2:
+        case 2: // 我的京东
         {
             [AlertManager showForView:self.view show:NO];
             WebViewController *web = [[WebViewController alloc]init];
@@ -147,34 +160,33 @@
             [AlertManager dismiss];
         }
             break;
-        case 3:
+        case 3: // 意见反馈
         {
-            
+            // itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1044488392
+            NSString * url = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@", APP_STORE_ID];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
         }
             break;
-        case 4:
+        case 4: // 清理缓存
         {
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"清空缓存后可能对程序造成卡顿。\n确定清空吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
-            view.tag = 999;
+            view.tag = cacheTAG;
             [view show];
         }
             break;
-        case 5:
+        case 5: // 检查更新
         {
-            [AlertManager showForView:self.view show:NO];
-            [self updateVersion];
+            [NetWoking netWokListeningWithOffTheNetForView:nil off:^{
+                [[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"当前网络不给力，请稍后重试!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil] show];
+            } on:^{
+                [AlertManager showForView:self.view show:NO];
+                [self updateVersion];
+            }];
+            
         }
             break;
         default:
             break;
-    }
-}
-
-//提示框
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1 && alertView.tag == 999) {
-        [CacheManager clearCache];
-        [_tableView reloadData];
     }
 }
 
@@ -190,24 +202,37 @@
         float v2 = str.floatValue;
         if (v2 > v1) {
            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"版本提示" message:@"发现新版本！" delegate:self cancelButtonTitle:@"下次提醒" otherButtonTitles:@"现在更新", nil];
-            view.tag = 888;
+            view.tag = updateTAG;
             [view show];
         } else {
             UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"版本提示" message:@"当前已是最新版本！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            view.tag = 888;
+            view.tag = updateTAG;
             [view show];
         }
+    } err:^{
+        [AlertManager dismiss];
+        
     }];
 }
 
-//提示框 itms-apps://itunes.apple.com/app/id1044488392
+/**
+ *  提示框
+ *
+ *  @param alertView
+ *  @param buttonIndex
+ */
 -(void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 1 && alertView.tag == 888) {
-        NSString * url = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/%@", APP_STORE_ID];
+    // 检查更新
+    if (buttonIndex == 1 && alertView.tag == updateTAG) {
+        //itms-apps://itunes.apple.com/app/id1044488392
+        NSString * url = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", APP_STORE_ID];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
     }
+    //清理缓存
+    if (buttonIndex == 1 && alertView.tag == cacheTAG) {
+        [CacheManager clearCache];
+        [_tableView reloadData];
+    }
 }
-
-//loading
 
 @end

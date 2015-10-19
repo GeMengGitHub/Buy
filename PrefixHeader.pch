@@ -9,8 +9,12 @@
 #ifndef Buy_PrefixHeader_pch
 #define Buy_PrefixHeader_pch
 
-#define APP_STORE_ID @"id1044488392"
-#define VERSION_UPDATE @"http://itunes.apple.com/lookup?id=1044488392"
+//app store id
+#define APP_STORE_ID @"1044488392"
+
+//友盟
+#define UM_APPKEY @"56244e3a67e58ef430005451"
+#define UM_SHARE [NSArray arrayWithObjects:UMShareToSina,UMShareToWechatTimeline,UMShareToWechatSession,UMShareToTencent,UMShareToQzone,UMShareToRenren,nil]
 
 #import "AFNetworking.h"
 #import "DBManager.h"
@@ -23,6 +27,7 @@
 #import "TQRichTextView.h"
 #import "CacheManager.h"
 #import "AlertManager.h"
+#import "UMSocial.h"
 #import "ZJModelTool.h"
 
 #define COLOR(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]

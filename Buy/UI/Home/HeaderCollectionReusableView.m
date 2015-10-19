@@ -8,10 +8,10 @@
 
 #import "HeaderCollectionReusableView.h"
 #import "BannerListModel.h"
-#import "CategoryListModel.h"
 
 @interface HeaderCollectionReusableView ()
 @property (nonatomic, strong) CGYScrollView *scrollView;
+@property (nonatomic, strong) NSArray  *menuArray;
 
 @end
 
@@ -38,6 +38,7 @@
 
 //设置菜单按钮
 -(void)setMenuWithArray:(NSArray *)array{
+    _menuArray = array;
     CGRect main = [UIScreen mainScreen].bounds;
     CGFloat f = (main.size.width - (44 * 4)) / 5;
     
@@ -55,7 +56,11 @@
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(button.frame.origin.x - (f / 2), button.frame.origin.y + button.frame.size.height + 4, button.frame.size.width + f, 18);
         label.textAlignment = NSTextAlignmentCenter;
-        label.text = model.name;
+        if ([model.name isEqualToString:@"禾禾有礼"]) {
+            label.text = @"每日精选";
+        } else {
+            label.text = model.name;
+        }
         label.font = [UIFont systemFontOfSize:12.0f];
         label.textColor = [UIColor grayColor];
         
@@ -93,7 +98,7 @@
 
 //按钮点击事件
 -(void)buttonClick:(UIButton *)button{
-    [_delegate didSelectedMenu:button.tag % 1000];
+    [_delegate didSelectedMenu:_menuArray[button.tag % 1000] index:button.tag % 1000];
 }
 
 @end

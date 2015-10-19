@@ -21,6 +21,7 @@
 @property (nonatomic, assign) int page;//页面
 @property (nonatomic, assign) int currentShow;//当前显示第几个界面
 //@property (nonatomic, strong) UIActivityIndicatorView *activity;//转动的小菊花
+@property (nonatomic, strong) UITapGestureRecognizer *tap;//单点手势
 
 @end
 
@@ -32,6 +33,8 @@
     [self setInit];
     [self setHeaderView];
     [self getDataWith:[_dataArray[_currentShow] cat_id]];
+    //[self netLinstening];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -46,7 +49,33 @@
     [super didReceiveMemoryWarning];
 }
 
-//获取数据
+/**
+ *  网络监听
+ */
+-(void)netLinstening{
+    [NetWoking netWokListeningWithOffTheNetForView:self.view off:^{
+        if (!_tap) {
+            _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reLoad)];
+            [self.view addGestureRecognizer:_tap];
+        }
+    } on:^{
+        [self.view removeGestureRecognizer:_tap];
+        [self getDataWith:[_dataArray[_currentShow] cat_id]];
+    }];
+}
+
+/**
+ *  重新加载
+ */
+-(void)reLoad{
+    [self netLinstening];
+}
+
+/**
+ *  获取网络数据
+ *
+ *  @param categoryId 根据categoryId来获取
+ */
 -(void)getDataWith:(NSString *)categoryId{
     //开启菊花
     [AlertManager showForView:self.view show:NO];
@@ -80,7 +109,6 @@
         [AlertManager dismiss];
         
     }];
-    
 }
 
 //设置导航

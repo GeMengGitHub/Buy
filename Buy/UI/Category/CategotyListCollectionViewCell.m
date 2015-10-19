@@ -88,6 +88,7 @@
     _priceLabel.textColor = COLOR(234, 53, 59, 1);
     _priceLabel.font = [UIFont systemFontOfSize:16.0f];
     
+    _likeButton.hidden = YES;
     _likeButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [_likeButton addTarget:self action:@selector(likeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_likeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];

@@ -8,22 +8,87 @@
 
 #import "NetWoking.h"
 
+@interface NetWoking ()
+@property (nonatomic, strong) UIImageView *netWokImageView;//没有网络的图片
+@property (nonatomic, strong) UILabel *netLabel;//没有网络的标语
+
+@end
+
 @implementation NetWoking
 
-//版本号
-+(void)getVersion:(strBlock)block{
++(NetWoking *)defaultNetWoking{
+    static NetWoking *net = nil;
+    if (!net) {
+        net = [[NetWoking alloc]init];
+    }
+    return net;
+}
+
+/**
+ *  获取版本号
+ *
+ *  @param block 获取成功时，返回版本号
+ *  @param err   网络错误时执行的回调
+ */
++(void)getVersion:(strBlock)block err:(errBlock)err{
+    NSString *url = [NSString stringWithFormat:@"http://itunes.apple.com/lookup?id=%@",APP_STORE_ID];
+    
     //网络管理者对象
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     //发送GET请求
-    [manager GET:VERSION_UPDATE parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         if (dic[@"results"][0][@"version"]) {
             block(dic[@"results"][0][@"version"]);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        err();
     }];
+}
+
+/**
+ *  网络监听
+ *
+ *  @param view 断网时，需要在哪个视图添加断网的标识
+ *  @param off  没有网络执行的回调
+ *  @param on   有网执行的回调
+ */
++(void)netWokListeningWithOffTheNetForView:(UIView *)view off:(block)off on:(block)on{
+    NetWoking *net = [NetWoking defaultNetWoking];
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        if (status <= AFNetworkReachabilityStatusNotReachable) {
+            //每次都移除view上的所有视图控件
+            NSArray *viewArray = view.subviews;
+            [viewArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [obj removeFromSuperview];
+            }];
+            
+            net.netWokImageView = [[UIImageView alloc]init];
+            net.netWokImageView.center = CGPointMake([DeviceManager frameWidth]/2, [DeviceManager frameHeight]/3);
+            net.netWokImageView.bounds = CGRectMake(0, 0, 86, 60);
+            net.netWokImageView.image = [UIImage imageNamed:@"icon_network.png"];
+            [view addSubview:net.netWokImageView];
+            
+            net.netLabel = [[UILabel alloc]init];
+            net.netLabel.center = CGPointMake([DeviceManager frameWidth]/2, net.netWokImageView.frame.size.height + net.netWokImageView.frame.origin.y + 30);
+            net.netLabel.bounds = CGRectMake(0, 0, 200, 18);
+            net.netLabel.text = @"网络不给力，点击重新加载!";
+            net.netLabel.textAlignment = NSTextAlignmentCenter;
+            net.netLabel.font = [UIFont systemFontOfSize:16];
+            net.netLabel.textColor = [UIColor grayColor];
+            [view addSubview:net.netLabel];
+            off();
+            
+        }else {
+            [net.netWokImageView removeFromSuperview];
+            [net.netLabel removeFromSuperview];
+            on();
+        }
+    }];
+    [manager.reachabilityManager startMonitoring];
 }
 
 

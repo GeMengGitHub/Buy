@@ -9,13 +9,28 @@
 #import <Foundation/Foundation.h>
 
 typedef void(^errBlock)(void);
+typedef void(^block)(void);
 typedef void(^dicBlock)(NSDictionary *dic);
 typedef void(^strBlock)(NSString *str);
 
 @interface NetWoking : NSObject
 
-//获取新版本
-+(void)getVersion:(strBlock)block;
+/**
+ *  获取版本号
+ *
+ *  @param block 获取成功时，返回版本号
+ *  @param err   网络错误时执行的回调
+ */
++(void)getVersion:(strBlock)block err:(errBlock)err;
+
+/**
+ *  网络监听
+ *
+ *  @param view 断网时，需要在哪个视图添加断网的标识
+ *  @param off  没有网络执行的回调
+ *  @param on   有网执行的回调
+ */
++(void)netWokListeningWithOffTheNetForView:(UIView *)view off:(block)off on:(block)on;
 
 //获取主页数据
 +(void)getHomeDataWithPage:(int)page data:(dicBlock)block err:(errBlock)err;

@@ -8,10 +8,11 @@
 
 #import "WebViewController.h"
 
-@interface WebViewController ()<UIWebViewDelegate>
+@interface WebViewController ()<UIWebViewDelegate,UMSocialUIDelegate>
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 @property (nonatomic, strong) UIButton *shareButton;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;// 单点手势
 
 @end
 
@@ -19,9 +20,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self setNavigation];
-    [self setWebView];
+    [self netLinsting];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,7 +32,34 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name: UIKeyboardWillShowNotification object:nil];
 }
 
+/**
+ *  网络监听
+ */
+-(void)netLinsting{
+    [NetWoking netWokListeningWithOffTheNetForView:self.view off:^{
+        if (!_tap) {
+            _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reLoad)];
+            [self.view addGestureRecognizer:_tap];
+        }
+    } on:^{
+        [self.view removeGestureRecognizer:_tap];
+        [self setWebView];
+    }];
+}
+
+/**
+ *  重新加载
+ */
+-(void)reLoad{
+    [self netLinsting];
+}
+
+/**
+ *  设置导航
+ */
 -(void)setNavigation{
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     _activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [self.navigationController.navigationBar addSubview:_activity];
     self.navigationItem.titleView = _activity;
@@ -72,7 +99,7 @@
             
         case 222:
         {
-            
+            [self shareWithContent:[NSString stringWithFormat:@"%@%@",_url,_myTitle] title:_myTitle image:nil];
         }
             break;
             
@@ -81,22 +108,42 @@
     }
 }
 
+/**
+ *  分享
+ */
+-(void)shareWithContent:(NSString *)content title:(NSString *)title image:(NSString *)image{
+    //微信好友分享时显示的标题
+    [UMSocialData defaultData].extConfig.wechatSessionData.title = title;
+    //QQ好友分享title
+    [UMSocialData defaultData].extConfig.qqData.title = title;
+    //QQ空间分享title
+    [UMSocialData defaultData].extConfig.qzoneData.title = title;
+    //图片分享
+    if (image) {
+        [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeImage url:image];
+    }
+    
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:UM_APPKEY
+                                      shareText:content
+                                     shareImage:nil
+                                shareToSnsNames:UM_SHARE
+                                       delegate:self];
+}
+
+/**
+ *  设置WebView
+ */
 -(void)setWebView{
     CGRect r = [UIScreen mainScreen].bounds;
     _webView = [[UIWebView alloc]init];
     _webView.frame = CGRectMake(0, 0, r.size.width, r.size.height - 64);
     [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
     //关闭弹簧
-    
+    [[_webView subviews][0] setBounces:NO];
     _webView.keyboardDisplayRequiresUserAction = NO;
-    //[[_webView subviews][0] setBounces:NO];
     _webView.delegate = self;
     [self.view addSubview:_webView];
-    
-    
-//    [[UIApplication sharedApplication].keyWindow setWindowLevel:UIWindowLevelStatusBar];
-//    [[[[UIApplication sharedApplication] delegate] window] makeKeyAndVisible];
-//    [[UIApplication sharedApplication].keyWindow addSubview:_webView];
 }
 
 -(void)keyboardWillShow:(NSNotification *)notification{
@@ -105,7 +152,6 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView{
     [_activity removeFromSuperview];
-    
     //标题
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.frame = CGRectMake(0, 0, 100, 44);
@@ -120,7 +166,6 @@
     } else {
         _shareButton.hidden = YES;
     }
-    
 }
 
 

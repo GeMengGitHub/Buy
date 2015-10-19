@@ -23,7 +23,7 @@
 
 -(void)setCellWithModel:(ShareListModel *)model{
     [self setView];
-    [_headerImageView setImageWithURL:[NSURL URLWithString:model.icon]];
+    [_headerImageView setImageWithURL:[NSURL URLWithString:model.icon] placeholderImage:[UIImage imageNamed:@"bg_default@3x.png"]];
     _titleLabel.text = model.name;
     _priceLabel.text = [NSString stringWithFormat:@"¥ %@", model.price];
     [_likeButton setTitle:model.like forState:UIControlStateNormal];
@@ -87,6 +87,7 @@
     _priceLabel.textColor = COLOR(234, 53, 59, 1);
     _priceLabel.font = [UIFont systemFontOfSize:16.0f];
     
+    _likeButton.hidden = YES;
     _likeButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [_likeButton addTarget:self action:@selector(likeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_likeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
