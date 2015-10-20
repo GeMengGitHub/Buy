@@ -222,4 +222,38 @@
     }];
 }
 
+/**
+ *  首页菜单按钮数据
+ *
+ *  @param tag_id
+ *  @param price_filter 价格
+ *  @param category_id
+ *  @param page         分页
+ *  @param block
+ *  @param err
+ */
++(void)getMenuDataWithTagId:(NSString *)tag_id price_filter:(NSString *)price_filter category_id:(NSString *)category_id page:(int)page data:(dicBlock)block err:(errBlock)err{
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+    [dic setObject:APPINFO forKey:@"appinfo"];
+    [dic setObject:[DeviceManager deviceinfo] forKey:@"deviceinfo"];
+    [dic setObject:[DeviceManager timeStamp] forKey:@"time_stamp"];
+    [dic setObject:[NSString stringWithFormat:@"%d", page*20] forKey:@"start"];
+    [dic setObject:@"20" forKey:@"count"];
+    [dic setObject:price_filter forKey:@"price_filter"];
+    [dic setObject:tag_id forKey:@"tag_id"];
+    [dic setObject:category_id forKey:@"category_id"];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager POST:API_MENU parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        block(dic);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        err();
+        
+    }];
+}
+
 @end

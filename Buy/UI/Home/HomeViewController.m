@@ -13,6 +13,7 @@
 #import "ShareListModel.h"
 #import "HomeCollectionViewCell.h"
 #import "DetailsViewController.h"
+#import "MenuDataListViewController.h"
 
 @interface HomeViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,HeaderCollectionReusableViewDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -57,14 +58,14 @@
     titleLabel.text = @"首页";
     self.navigationItem.titleView = titleLabel;
     //搜索按钮
-    UIButton * searchButton = [[UIButton alloc]init];
-    searchButton.frame = CGRectMake(0, 0, 24, 24);
-    searchButton.tintColor = [UIColor whiteColor];
-    UIImage *image = [[UIImage imageNamed:@"homeViewSearch_icon.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    [searchButton setImage:image forState:UIControlStateNormal];
-    [searchButton setImage:image forState:UIControlStateHighlighted];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
-    self.navigationItem.rightBarButtonItem = barButton;
+//    UIButton * searchButton = [[UIButton alloc]init];
+//    searchButton.frame = CGRectMake(0, 0, 24, 24);
+//    searchButton.tintColor = [UIColor whiteColor];
+//    UIImage *image = [[UIImage imageNamed:@"homeViewSearch_icon.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    [searchButton setImage:image forState:UIControlStateNormal];
+//    [searchButton setImage:image forState:UIControlStateHighlighted];
+//    UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
+//    self.navigationItem.rightBarButtonItem = barButton;
 
     _dataArray = [[NSMutableArray alloc]init];
     _page = 0;
@@ -249,62 +250,74 @@
 //HeaderCollectionReusableView协议方法（菜单按钮、滚动图片点击事件）
 -(void)didSelectedMenu:(CategoryListModel *)model index:(NSInteger)index{
     NSLog(@"%@", model.cat_id);
-    switch (index) {
-        case 0:
-        {
-            
-        }
-            break;
-            
-        case 1:
-        {
-            
-        }
-            break;
-            
-        case 2:
-        {
-            
-        }
-            break;
-            
-        case 3:
-        {
-            
-        }
-            break;
-            
-        case 4:
-        {
-            
-        }
-            break;
-            
-        case 5:
-        {
-            
-        }
-            break;
-            
-        case 6:
-        {
-            
-        }
-            break;
-            
-        case 7:
-        {
-            
-        }
-            break;
-            
-        default:
-            break;
-    }
+    
+    MenuDataListViewController *vc = [[MenuDataListViewController alloc]init];
+    vc.model = model;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+//    switch (index) {
+//        case 0: // 天天特价
+//        {
+//            MenuDataListViewController *vc = [[MenuDataListViewController alloc]init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }
+//            break;
+//            
+//        case 1: // 禾禾有礼
+//        {
+//            
+//        }
+//            break;
+//            
+//        case 2: // 进口优选
+//        {
+//            
+//        }
+//            break;
+//            
+//        case 3: // 坚果零食
+//        {
+//            
+//        }
+//            break;
+//            
+//        case 4: // 滋补养生
+//        {
+//            
+//        }
+//            break;
+//            
+//        case 5: // 风味特产
+//        {
+//            
+//        }
+//            break;
+//            
+//        case 6: // 名茶名饮
+//        {
+//            
+//        }
+//            break;
+//            
+//        case 7: // 百宝箱
+//        {
+//            
+//        }
+//            break;
+//            
+//        default:
+//            break;
+//    }
 }
 
+/**
+ *  滚动图片点击
+ *
+ *  @param index 被点击的是第几个图片
+ */
 -(void)didSelectedScrollView:(NSInteger)index{
     
 }
+
 
 @end

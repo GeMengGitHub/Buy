@@ -169,7 +169,7 @@ typedef enum : NSUInteger {
             break;
         case 4: // 清理缓存
         {
-            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"清空缓存后可能对程序造成卡顿。\n确定清空吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
+            UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"确定清空缓存吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
             view.tag = cacheTAG;
             [view show];
         }

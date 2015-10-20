@@ -48,6 +48,7 @@
 #define API_FOUND_LIST @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
 #define API_TAOBAO @"http://h5.m.taobao.com/awp/mtb/mtb.htm"
 #define API_JINGDONG @"http://home.m.jd.com/myJd/home.action"
+#define API_MENU @"http://www.hehe168.com/mapi.php?act=getGoods&c=2"
 
 //database
 #define DATABASE_NAME @"buy"

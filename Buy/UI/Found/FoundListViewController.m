@@ -60,12 +60,14 @@
         [_collectionView footerEndRefreshing];
         //刷新页面
         [_collectionView reloadData];
+        [AlertManager dismiss];
         
     } err:^{
         //收起下拉刷新
         [_collectionView headerEndRefreshingWithResult:JHRefreshResultSuccess];
         //收起上拉加载更多
         [_collectionView footerEndRefreshing];
+        [AlertManager dismiss];
     }];
 }
 
@@ -126,6 +128,9 @@
         mySelf.page ++;
         [mySelf getData];
     }];
+    
+    //显示滚动
+    [AlertManager showForView:self.view show:NO];
 }
 
 //Collection协议方法

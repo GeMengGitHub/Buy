@@ -82,7 +82,8 @@
     UIButton *button = [[UIButton alloc]init];
     button.frame = CGRectMake(4.0f, 6.0f, 100.0f, 18.0f);
     [button setImage:image forState:UIControlStateNormal];
-    [button setTitle:[NSString stringWithFormat:@"%@更新",[self nowTime]] forState:UIControlStateNormal];
+    //[button setTitle:[NSString stringWithFormat:@"%@更新",[self nowTime]] forState:UIControlStateNormal];
+    [button setTitle:[NSString stringWithFormat:@"每日推荐"] forState:UIControlStateNormal];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, -4.0f)];
     [button setTitleColor:COLOR(65, 181, 55, 1) forState:UIControlStateNormal];
     [cellHeaderview addSubview:button];

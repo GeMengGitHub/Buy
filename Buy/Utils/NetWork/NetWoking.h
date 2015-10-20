@@ -50,4 +50,17 @@ typedef void(^strBlock)(NSString *str);
 //发现详情页
 +(void)getFoundListDataWith:(int)page cat_id:(NSString *)cat_id category_id:(NSString *)category_id price_filter:(NSString *)price_filter data:(dicBlock)dicBlock err:(errBlock)err;
 
+
+/**
+ *  首页菜单按钮数据
+ *
+ *  @param tag_id
+ *  @param price_filter 价格
+ *  @param category_id
+ *  @param page         分页
+ *  @param block
+ *  @param err
+ */
++(void)getMenuDataWithTagId:(NSString *)tag_id price_filter:(NSString *)price_filter category_id:(NSString *)category_id page:(int)page data:(dicBlock)block err:(errBlock)err;
+
 @end
