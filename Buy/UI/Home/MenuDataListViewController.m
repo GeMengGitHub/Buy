@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, assign) int page;
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 @end
 
@@ -26,18 +27,38 @@
     [super viewDidLoad];
     [self setInit];
     [self setNavigation];
-    [self getData];
-    [self setTableView];
+    [self netLinstening];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
+-(void)netLinstening{
+    [NetWoking netWokListeningWithOffTheNetForView:self.view off:^{
+        if (!_tap) {
+            _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reLoadView)];
+            [self.view addGestureRecognizer:_tap];
+        }
+        
+    } on:^{
+        [self.view removeGestureRecognizer:_tap];
+        [self getData];
+        [self setTableView];
+       
+    }];
+}
+
+-(void)reLoadView{
+    [self netLinstening];
+}
+
 /**
  *  设置导航
  */
 -(void)setNavigation{
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     //标题
     UILabel *titleLabel = [[UILabel alloc]init];
     titleLabel.frame = CGRectMake(0, 0, 100, 44);
@@ -87,10 +108,23 @@
         } else {
             [_dataArray addObjectsFromArray:[ShareListModel setModelWithArray:dic[@"shareList"]]];
         }
-        [AlertManager dismiss];
+        //收起下拉刷新
+        [_tableView headerEndRefreshingWithResult:JHRefreshResultSuccess];
+        //收起上拉加载更多
+        [_tableView footerEndRefreshing];
+        //刷新页面
         [_tableView reloadData];
+        //隐藏loading
+        [AlertManager dismiss];
         
     } err:^{
+        //收起下拉刷新
+        [_tableView headerEndRefreshingWithResult:JHRefreshResultSuccess];
+        //收起上拉加载更多
+        [_tableView footerEndRefreshing];
+        //刷新页面
+        [_tableView reloadData];
+        //隐藏loading
         [AlertManager dismiss];
         
     }];
@@ -112,6 +146,20 @@
     layout = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_tableView]-0-|" options:0 metrics:nil views:@{@"_tableView":_tableView}];
     [self.view addConstraints:layout];
     [AlertManager showForView:_tableView show:NO];
+    
+    //下拉刷新
+    //下拉刷新
+    __block MenuDataListViewController *mySelf = self;
+    [_tableView addRefreshHeaderViewWithAniViewClass:[JHRefreshCommonAniView class] beginRefresh:^{
+        mySelf.page = 0;
+        [mySelf getData];
+    }];
+    
+    //上拉获取更多
+    [_tableView addRefreshFooterViewWithAniViewClass:[JHRefreshCommonAniView class] beginRefresh:^{
+        mySelf.page ++;
+        [mySelf getData];
+    }];
 }
 
 /**

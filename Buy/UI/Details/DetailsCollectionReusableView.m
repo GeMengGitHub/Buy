@@ -187,7 +187,7 @@
     [self addConstraints:layoutArray];
     
     // _titleLabel 标题约束
-    layoutArray = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_titleLabel(>=0)]" options:0 metrics:nil views:@{@"_titleLabel":_titleLabel}];
+    layoutArray = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_titleLabel]-40-|" options:0 metrics:nil views:@{@"_titleLabel":_titleLabel}];
     [self addConstraints:layoutArray];
     layoutArray = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_headerImageView]-10-[_titleLabel(22)]" options:0 metrics:nil views:@{@"_headerImageView":_headerImageView, @"_titleLabel":_titleLabel}];
     [self addConstraints:layoutArray];

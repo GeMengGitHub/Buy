@@ -101,7 +101,7 @@
     [paramDic addEntriesFromDictionary:dic];
     [paramDic addEntriesFromDictionary:whereDic];
     
-    NSLog(@"%@", sql);//show sql
+//    NSLog(@"%@", sql);//show sql
     return [_dataBase executeUpdate:sql withParameterDictionary:paramDic];
 }
 
@@ -121,7 +121,7 @@
         }
     }
     
-    NSLog(@"%@", sql);//show sql
+//    NSLog(@"%@", sql);//show sql
     return [_dataBase executeUpdate:sql withParameterDictionary:dic];
 }
 
@@ -148,7 +148,7 @@
         }
         [array addObject:dict];
     }
-    NSLog(@"%@", sql);//show sql
+//    NSLog(@"%@", sql);//show sql
     return array;
 }
 

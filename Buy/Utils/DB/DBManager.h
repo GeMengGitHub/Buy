@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShareListModel.h"
 
+typedef void(^block)(void);
 @interface DBManager : NSObject
 
 //滚动图片数据
@@ -29,5 +31,11 @@
 //分类子类
 +(void)writeCategorySubWithArray:(NSArray *)array;
 +(NSArray *)readCategorySubWithWhere:(NSDictionary *)dic;
+
+//收藏
++(BOOL)collectionWithModel:(ShareListModel *)model insert:(block)insert delete:(block)del;
++(BOOL)collectionWithModel:(ShareListModel *)model;
++(BOOL)disCollectionWithModel:(ShareListModel *)model;
++(NSArray *)collection;
 
 @end

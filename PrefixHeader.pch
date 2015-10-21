@@ -10,7 +10,7 @@
 #define Buy_PrefixHeader_pch
 
 //app store id
-#define APP_STORE_ID @"1044488392"
+#define APP_STORE_ID @"1050921183"
 
 //友盟
 #define UM_APPKEY @"56244e3a67e58ef430005451"
@@ -67,7 +67,9 @@
 //分类子类
 #define TABLE_CATEGORYSUB @"CategorySub"
 #define TABLE_CATEGORYSUB_ARRAY @[@"parent_id",@"cat_id",@"name",@"logo"]
-
+//我的喜欢
+#define TABLE_LIKE @"like"
+#define TABLE_LIKE_ARRAY @[@"width2",@"source",@"url",@"low",@"type",@"best_desc",@"share_id",@"icon",@"baike_url",@"name",@"source_title",@"is_strategy",@"detail_logo2",@"height",@"external_id",@"width",@"original_price",@"height2",@"is_free_shipping",@"desc",@"price",@"like",@"goods_url",@"detail_logo",]
 
 
 #endif

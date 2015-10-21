@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableArray *dataArray;//列表数据
 @property (nonatomic, assign) int page;//第几页
 @property (nonatomic, strong) UIButton *topButton;//返回顶部
+@property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 @end
 
@@ -31,10 +32,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setInit];
-    [self getLocalData];
-    [self getData];
     [self setCollectionView];
     [self setScrollViewTopView];
+    [self getLocalData];
+    [self getData];
+    //[self netLinstening];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -44,6 +46,24 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)netLinstening{
+    [NetWoking netWokListeningWithOffTheNetForView:self.view off:^{
+        if (!_tap) {
+            _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(reLoadView)];
+            [self.view addGestureRecognizer:_tap];
+        }
+        
+    } on:^{
+        [self.view removeGestureRecognizer:_tap];
+        
+        
+    }];
+}
+
+-(void)reLoadView{
+    [self netLinstening];
 }
 
 //初始化

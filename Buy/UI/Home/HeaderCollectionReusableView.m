@@ -43,6 +43,16 @@
     CGFloat f = (main.size.width - (44 * 4)) / 5;
     
     for (int i = 0; i < array.count; i ++) {
+        UIButton *tempButton = (UIButton *)[self viewWithTag:1000+i];
+        if (tempButton) {
+            [tempButton removeFromSuperview];
+        }
+        UILabel *tempLabel = (UILabel *)[self viewWithTag:10000+i];
+        if (tempLabel) {
+            [tempLabel removeFromSuperview];
+        }
+        
+        
         CategoryListModel *model = (CategoryListModel *)array[i];
         //按钮
         UIButton *button = [[UIButton alloc]init];
@@ -54,6 +64,7 @@
         [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         //标题
         UILabel *label = [[UILabel alloc]init];
+        label.tag = 10000 + i;
         label.frame = CGRectMake(button.frame.origin.x - (f / 2), button.frame.origin.y + button.frame.size.height + 4, button.frame.size.width + f, 18);
         label.textAlignment = NSTextAlignmentCenter;
         if ([model.name isEqualToString:@"禾禾有礼"]) {

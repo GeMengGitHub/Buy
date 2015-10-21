@@ -188,7 +188,7 @@
 -(void)setCollectionView{
     CGRect r = [UIScreen mainScreen].bounds;
     _flowLayout = [[UICollectionViewFlowLayout alloc]init];
-    _flowLayout.itemSize = CGSizeMake((r.size.width-112)/2, 100);
+    _flowLayout.itemSize = CGSizeMake(([DeviceManager frameWidth] - 112)/2 , 100);
     _flowLayout.minimumLineSpacing = 4;
     _flowLayout.minimumInteritemSpacing = 4;
     _flowLayout.sectionInset = UIEdgeInsetsMake(4.0f, 4.0f, 0.0f, 4.0f);

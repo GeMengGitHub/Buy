@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSMutableArray *contentArray;//显示的内容
 @property (nonatomic, assign) int page;//页面
 @property (nonatomic, assign) int currentShow;//当前显示第几个界面
-//@property (nonatomic, strong) UIActivityIndicatorView *activity;//转动的小菊花
+@property (nonatomic, strong) UIActivityIndicatorView *activity;//转动的小菊花
 @property (nonatomic, strong) UITapGestureRecognizer *tap;//单点手势
 
 @end
@@ -32,6 +32,7 @@
     [self setNavigation];
     [self setInit];
     [self setHeaderView];
+    [self setLoadingForNavigation];
     [self getDataWith:[_dataArray[_currentShow] cat_id]];
     //[self netLinstening];
     
@@ -78,7 +79,7 @@
  */
 -(void)getDataWith:(NSString *)categoryId{
     //开启菊花
-    [AlertManager showForView:self.view show:NO];
+    [_activity startAnimating];
     
     //刷新界面
     UICollectionView *view = _mainScrollView.subviews[_currentShow];
@@ -100,15 +101,28 @@
         [view reloadData];
         [view headerEndRefreshingWithResult:JHRefreshResultNone];
         [view footerEndRefreshing];
-        [AlertManager dismiss];
+        [_activity stopAnimating];
+        //[AlertManager dismiss];
         
     } err:^{
         [view reloadData];
         [view headerEndRefreshingWithResult:JHRefreshResultNone];
         [view footerEndRefreshing];
-        [AlertManager dismiss];
+        [_activity stopAnimating];
+        //[AlertManager dismiss];
         
     }];
+}
+
+/**
+ *  设置转动的菊花
+ */
+-(void)setLoadingForNavigation{
+    if (!_activity) {
+        _activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _activity.frame = CGRectMake([DeviceManager frameWidth] - 50, 0, 40, 40);
+        [self.navigationController.navigationBar addSubview:_activity];
+    }
 }
 
 //设置导航
@@ -135,16 +149,16 @@
     self.navigationItem.titleView = titleLabel;
     
     //排序按钮
-    UIButton * orderbyButton = [[UIButton alloc]init];
-    orderbyButton.frame = CGRectMake(0, 0, 24, 24);
-    orderbyButton.tintColor = [UIColor whiteColor];
-    UIImage *image = [[UIImage imageNamed:@"icon_filter.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIImage *image2 = [[UIImage imageNamed:@"icon_filter_highlight.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    [orderbyButton setImage:image forState:UIControlStateNormal];
-    [orderbyButton setImage:image2 forState:UIControlStateHighlighted];
+//    UIButton * orderbyButton = [[UIButton alloc]init];
+//    orderbyButton.frame = CGRectMake(0, 0, 24, 24);
+//    orderbyButton.tintColor = [UIColor whiteColor];
+//    UIImage *image = [[UIImage imageNamed:@"icon_filter.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    UIImage *image2 = [[UIImage imageNamed:@"icon_filter_highlight.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//    [orderbyButton setImage:image forState:UIControlStateNormal];
+//    [orderbyButton setImage:image2 forState:UIControlStateHighlighted];
 //    [orderbyButton addTarget:self action:@selector(fitleButtonClick) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:orderbyButton];
-    self.navigationItem.rightBarButtonItem = barButton;
+//    UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithCustomView:orderbyButton];
+//    self.navigationItem.rightBarButtonItem = barButton;
 }
 
 //初始化
@@ -160,14 +174,6 @@
     _mainScrollView.pagingEnabled = YES;
     [_mainScrollView setContentSize:CGSizeMake(_dataArray.count * self.view.frame.size.width, self.view.frame.size.height - 34)];
     [self.view addSubview:_mainScrollView];
-    
-    //初始化：转动的菊花
-//    _activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-//    _activity.center = CGPointMake(self.view.frame.size.width/2, 200);
-//    _activity.bounds = CGRectMake(0, 0, 100, 100);
-//    _activity.backgroundColor = COLOR(0, 0, 0, 0.8);
-//    _activity.layer.cornerRadius = 8;
-//    [self.view addSubview:_activity];
     
     //初始化页面
     _currentShow = _index;

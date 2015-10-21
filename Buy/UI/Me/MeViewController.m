@@ -9,6 +9,7 @@
 #import "MeViewController.h"
 #import "MeTableViewCell.h"
 #import "WebViewController.h"
+#import "CollectionViewController.h"
 
 /**
  TAG 值，用于区检查更新、清理缓存的提示框
@@ -62,7 +63,7 @@ typedef enum : NSUInteger {
 -(void)setInit{
     self.view.backgroundColor = [UIColor whiteColor];
     _dataArray = [[NSMutableArray alloc]init];
-    [_dataArray addObject:@{@"image":@"icon_like.png",@"name":@"我喜欢的"}];
+    [_dataArray addObject:@{@"image":@"icon_like.png",@"name":@"我的收藏"}];
     [_dataArray addObject:@{@"image":@"icon_taobao.png",@"name":@"淘宝订单"}];
     [_dataArray addObject:@{@"image":@"icon_jingdong.png",@"name":@"京东订单"}];
     [_dataArray addObject:@{@"image":@"icon_heartCart.png",@"name":@"给我评分"}];
@@ -135,7 +136,8 @@ typedef enum : NSUInteger {
     switch (indexPath.section) {
         case 0: // 我的喜欢
         {
-            
+            CollectionViewController *coll = [[CollectionViewController alloc]init];
+            [self.navigationController pushViewController:coll animated:YES];
         }
             break;
         case 1: // 我的淘宝
@@ -160,7 +162,7 @@ typedef enum : NSUInteger {
             [AlertManager dismiss];
         }
             break;
-        case 3: // 意见反馈
+        case 3: // 给我评分
         {
             // itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1044488392
             NSString * url = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@", APP_STORE_ID];

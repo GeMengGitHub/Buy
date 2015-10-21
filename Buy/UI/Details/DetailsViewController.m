@@ -223,15 +223,26 @@
     _likeButton = [[UIButton alloc]init];
     _likeButton.frame = CGRectMake(8, 8, (_bottomView.frame.size.width - 34)/2, _bottomView.frame.size.height - 16);
     _likeButton.tag = 101;
+    _likeButton.titleLabel.font = [UIFont systemFontOfSize:16];
     _likeButton.layer.cornerRadius = 2;
     _likeButton.layer.borderWidth = 1;
     _likeButton.layer.borderColor = [COLOR(65, 181, 55, 1) CGColor];
     _likeButton.backgroundColor = [UIColor whiteColor];
     [_likeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_likeButton setImage:[UIImage imageNamed:@"icon_prise.png"] forState:UIControlStateNormal];
+    UIImage *image = [[UIImage imageNamed:@"icon_prise.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [_likeButton setImage:image forState:UIControlStateNormal];
     [_likeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, -10.0f, 0.0f, 0.0f)];
     //[_likeButton setTitle:_shareModel.like forState:UIControlStateNormal];
-    [_likeButton setTitle:@"我的喜欢" forState:UIControlStateNormal];
+    BOOL result = [DBManager collectionWithModel:_shareModel];
+    if (result) {
+        _likeButton.tintColor = COLOR(65, 181, 55, 1);
+        [_likeButton setTitleColor:COLOR(65, 181, 55, 1) forState:UIControlStateNormal];
+        [_likeButton setTitle:@"已收藏" forState:UIControlStateNormal];
+    } else {
+        _likeButton.tintColor = [UIColor grayColor];
+        [_likeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [_likeButton setTitle:@"未收藏" forState:UIControlStateNormal];
+    }
     [_likeButton addTarget:self action:@selector(bottomButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_bottomView addSubview:_likeButton];
     
@@ -241,6 +252,7 @@
                                    _likeButton.frame.size.width -
                                    _likeButton.frame.origin.x - 10, 8, (_bottomView.frame.size.width - 34)/2, _bottomView.frame.size.height - 16);
     _gotoButton.tag = 102;
+    _gotoButton.titleLabel.font = [UIFont systemFontOfSize:16];
     _gotoButton.layer.cornerRadius = 2;
     _gotoButton.backgroundColor = COLOR(65, 181, 55, 1);
     [_gotoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -254,7 +266,15 @@
     switch (button.tag) {
         case 101:
         {
-            
+            [DBManager collectionWithModel:_shareModel insert:^{
+                [_likeButton setTitle:@"已收藏" forState:UIControlStateNormal];
+                _likeButton.tintColor = COLOR(65, 181, 55, 1);
+                [_likeButton setTitleColor:COLOR(65, 181, 55, 1) forState:UIControlStateNormal];
+            } delete:^{
+                [_likeButton setTitle:@"未收藏" forState:UIControlStateNormal];
+                _likeButton.tintColor = [UIColor grayColor];
+                [_likeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            }];
         }
             break;
             
